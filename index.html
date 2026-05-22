@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mnemósine // Gerador de Suspense Psicológico</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca para geração do PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* DEFINIÇÃO DOS TEMAS (VARIÁVEIS CSS) */
+        
+        /* Tema Escuro (Padrão) */
+        body {
+            --bg-deep: #0a0c10;
+            --bg-card: rgba(18, 22, 28, 0.75);
+            --accent-crimson: #a93232;
+            --accent-glow: rgba(169, 50, 50, 0.25);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-focus: rgba(169, 50, 50, 0.5);
+            --input-bg: rgba(10, 12, 16, 0.6);
+            --viewport-bg: rgba(8, 10, 14, 0.4);
+            --gradient-1: rgba(20, 24, 33, 0.8);
+            --gradient-2: rgba(35, 15, 15, 0.25);
+            --title-color: #ffffff;
+            --paragraph-color: #cbd5e1;
+            --shadow-intensity: rgba(0, 0, 0, 0.6);
+            --toggle-bg: rgba(255, 255, 255, 0.05);
+            
+            transition: background-color 0.5s ease, background-image 0.5s ease, color 0.3s ease;
+        }
+        
+        /* Tema Claro (Manuscrito de Pergaminho) */
+        body.light-theme {
+            --bg-deep: #e8e6df;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --accent-crimson: #801818;
+            --accent-glow: rgba(128, 24, 24, 0.15);
+            --text-main: #1c1d21;
+            --text-muted: #5c6470;
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --border-focus: rgba(128, 24, 24, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --viewport-bg: rgba(240, 238, 230, 0.6);
+            --gradient-1: rgba(225, 222, 212, 0.8);
+            --gradient-2: rgba(215, 200, 200, 0.3);
+            --title-color: #121315;
+            --paragraph-color: #2b2d31;
+            --shadow-intensity: rgba(0, 0, 0, 0.15);
+            --toggle-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        .app-container, .reading-panel, select, textarea, .btn-submit, .btn-secondary, .manuscript-viewport, .theme-toggle {
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, color 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Bloqueia rolagem geral da página em telas desktop */
+        @media (min-width: 961px) {
+            body {
+                overflow: hidden;
+                height: 100vh;
+            }
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 25%, var(--gradient-1) 0%, transparent 55%),
+                radial-gradient(circle at 85% 75%, var(--gradient-2) 0%, transparent 65%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Container Principal Estruturado */
+        .app-container {
+            width: 100%;
+            max-width: 1240px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 24px 60px var(--shadow-intensity), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 30px;
+            position: relative;
+        }
+
+        @media (min-width: 961px) {
+            .app-container {
+                height: 90vh;
+                max-height: 850px;
+            }
+        }
+
+        @media (max-width: 960px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                padding: 20px;
+                gap: 20px;
+            }
+        }
+
+        /* Cabeçalho */
+        header {
+            grid-column: 1 / -1;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--title-color);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        /* Controles de Cabeçalho (Toggle) */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Botão Interruptor de Tema */
+        .theme-toggle {
+            background-color: var(--toggle-bg);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            outline: none;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-focus);
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        body.light-theme .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .toggle-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover .toggle-icon {
+            transform: rotate(15deg);
+        }
+
+        .stream-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Animação de pulso */
+        .pulse-icon {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .pulse-icon.active {
+            background-color: var(--accent-crimson);
+            box-shadow: 0 0 10px var(--accent-crimson);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* Painel Lateral (Inputs) - Fixado no Dashboard */
+        .sidebar-controls {
+            grid-column: 1;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 961px) {
+            .sidebar-controls {
+                overflow-y: auto;
+                padding-right: 10px;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        /* Seletores e Textareas Modernos */
+        select, textarea {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 12px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+        }
+
+        select:hover, textarea:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.light-theme select:hover, body.light-theme textarea:hover {
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+
+        select:focus, textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Campo customizável */
+        .custom-field {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+            margin-top: 0;
+        }
+
+        .custom-field.visible {
+            max-height: 150px;
+            opacity: 1;
+            margin-top: 10px;
+        }
+
+        textarea.custom-input {
+            resize: none;
+            min-height: 90px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Botões de Ação */
+        .action-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-crimson);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        .btn-submit:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            background-color: #1a1e26;
+            color: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            box-shadow: none;
+            border: 1px solid var(--border-subtle);
+        }
+
+        body.light-theme .btn-submit:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+            background-color: var(--toggle-bg);
+        }
+
+        /* Botão para Baixar PDF */
+        .btn-text-action {
+            background: transparent;
+            border: 1px solid var(--accent-crimson);
+            color: var(--accent-crimson);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: none; /* Exibido via JS */
+        }
+
+        .btn-text-action:hover {
+            background-color: var(--accent-crimson);
+            color: #ffffff;
+        }
+
+        /* Painel de Leitura (O Manuscrito) - Fixado no Dashboard */
+        .reading-panel {
+            grid-column: 2;
+            grid-row: 2;
+            background-color: var(--viewport-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @media (min-width: 961px) {
+            .reading-panel {
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 960px) {
+            .reading-panel {
+                height: 550px;
+            }
+        }
+
+        .reading-panel-header {
+            padding: 14px 24px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reading-panel-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Área de Escrita */
+        .manuscript-viewport {
+            padding: 40px;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            scroll-behavior: smooth;
+        }
+
+        .manuscript-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            text-align: center;
+            color: var(--title-color);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            line-height: 1.3;
+        }
+
+        /* Tipografia de Alta Qualidade para o Conto */
+        .manuscript-paragraph {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.35rem;
+            line-height: 1.75;
+            color: var(--paragraph-color);
+            text-align: justify;
+            text-indent: 40px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .placeholder-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-style: italic;
+            text-align: center;
+            margin: auto;
+            max-width: 320px;
+            line-height: 1.6;
+        }
+
+        /* DESIGN PREMIUM DO COMPONENTE DE ERRO (SINAL CORROMPIDO) */
+        .error-card {
+            background-color: rgba(10, 11, 14, 0.9);
+            border: 1px solid var(--accent-crimson);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.75), 0 0 20px var(--accent-glow);
+            padding: 32px;
+            border-radius: 12px;
+            max-width: 480px;
+            width: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            animation: error-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        body.light-theme .error-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1), 0 0 20px var(--accent-glow);
+            border: 1.5px solid var(--accent-crimson);
+        }
+
+        .error-icon-wrapper {
+            color: var(--accent-crimson);
+            background: rgba(158, 42, 43, 0.08);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(158, 42, 43, 0.2);
+            animation: pulse-blink 2s infinite;
+        }
+
+        .error-title {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-crimson);
+            font-size: 1.25rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .error-message {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        @keyframes error-appear {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulse-blink {
+            0%, 100% { opacity: 0.75; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.04); }
+        }
+
+        /* Barra de rolagem minimalista */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+        body.light-theme ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div>
+                <h1>MNEMÓSINE</h1>
+                <span class="subtitle">Arquitetura de Atmosferas Narrativas</span>
+            </div>
+            
+            <div class="header-controls">
+                <button class="theme-toggle" id="themeToggle" title="Alternar Luminosidade">
+                    <span class="toggle-icon" id="toggleIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    </span> 
+                    <span id="toggleText">Modo Claro</span>
+                </button>
+
+                <div class="stream-indicator">
+                    <span class="pulse-icon" id="pulseIcon"></span>
+                    <span id="statusText">Sistema Ocioso</span>
+                </div>
+            </div>
+        </header>
+
+        <aside class="sidebar-controls">
+            <!-- Espaço Geográfico Expandido -->
+            <div class="input-group">
+                <label for="cenario">Espaço Geográfico / Isolamento</label>
+                <select id="cenario" onchange="checkCustomOption('cenario')">
+                    <option value="Um farol automatizado na costa escocesa durante a pior tempestade do século">O Farol Costeiro</option>
+                    <option value="O subsolo esquecido de um arquivo público subterrâneo abandonado desde 1984">O Arquivo Subterrâneo</option>
+                    <option value="Uma cabana de caça nos confins da Sibéria onde o rádio só transmite estática">A Cabana Transiberiana</option>
+                    <option value="Uma estação científica subaquática de pesquisa no leito da Fossa das Marianas">Estação Abissal (Fossa das Marianas)</option>
+                    <option value="Um sanatório desativado no topo de uma montanha suíça, isolado por uma névoa perpétua">O Sanatório Suíço Desativado</option>
+                    <option value="Um vilarejo esquecido e decadente cercado por pântanos na costa da Nova Inglaterra">O Vilarejo Costeiro Pustulento</option>
+                    <option value="Uma estação de mineração deserta orbitando um planeta gigante gasoso sem luz solar">Estação Espacial Derivante</option>
+                    <option value="custom">Escrever um cenário personalizado...</option>
+                </select>
+                <div id="cenario_box" class="custom-field">
+                    <textarea id="cenario_custom" class="custom-input" placeholder="Descreva as características e o isolamento do ambiente..."></textarea>
+                </div>
+            </div>
+
+            <!-- Vetor de Ameaça Expandido -->
+            <div class="input-group">
+                <label for="tipo_medo">Vetor Psicológico (Ameaça)</label>
+                <select id="tipo_medo" onchange="checkCustomOption('tipo_medo')">
+                    <option value="Paranoia pura, onde o protagonista duvida se seus próprios sentidos e memórias são reais">Paranoia & Erosão Mental</option>
+                    <option value="Terror cósmico existencial, o confronto com uma verdade matemática impossível que destrói a mente">Horror Cósmico Existencial</option>
+                    <option value="Sobrenatural sutil, regras e superstições físicas antigas que começam a quebrar no ambiente">Gótico / Quebra da Física Local</option>
+                    <option value="Uma certeza absoluta de que há algo habitando os pontos cegos do ambiente e alterando os detalhes">Ameaça Invisível nos Pontos Cegos</option>
+                    <option value="O pavor inexplicável de encontrar discrepâncias físicas em si mesmo ou o duplo no reflexo do espelho">O Duplo (Efeito Doppelgänger)</option>
+                    <option value="Uma distorção na passagem do tempo, onde minutos parecem dias e o passado e futuro se sobrepõem">Anomalia Temporal / Perda de Tempo</option>
+                    <option value="A ausência absoluta de som ambiente que começa a causar alucinações e revelar vozes internas aos ossos">O Silêncio Absoluto Auditivo</option>
+                    <option value="custom">Definir fobia ou ameaça personalizada...</option>
+                </select>
+                <div id="tipo_medo_box" class="custom-field">
+                    <textarea id="tipo_medo_custom" class="custom-input" placeholder="Especifique a força, anomalia ou declínio que agirá na mente..."></textarea>
+                </div>
+            </div>
+
+            <!-- Filtros de Prosa Expandidos -->
+            <div class="input-group">
+                <label for="estilo_escrita">Filtro de Prosa (Estilo)</label>
+                <select id="estilo_escrita" onchange="checkCustomOption('estilo_escrita')">
+                    <option value="Estilo clássico do século XIX, poético, denso e melancólico como Edgar Allan Poe">Edgar Allan Poe (Clássico)</option>
+                    <option value="Relato documental frio, cru, em formato de registros de diário recuperados">Diário Absorvido (Found Footage)</option>
+                    <option value="Estilo moderno realista, frases curtas, focado no desespero claustrofóbico contemporâneo">Minimalismo Claustrofóbico</option>
+                    <option value="Estilo gótico romântico com tom acadêmico racionalista que declina diante do absurdo, como Mary Shelley">Gótico Científico (Mary Shelley)</option>
+                    <option value="Estilo focado em detalhes domésticos perturbadores, ironia psicológica e fluxo febril de consciência">Prosa Onírica e Ácida (Shirley Jackson)</option>
+                    <option value="Estilo noir pessimista com descrições cruas de decadência existencial, frases secas e melancólicas">Filtro Policial Noir Existencial</option>
+                    <option value="custom">Customizar tom literário...</option>
+                </select>
+                <div id="estilo_escrita_box" class="custom-field">
+                    <textarea id="estilo_escrita_custom" class="custom-input" placeholder="Ex: Escrito em tom poético, descritivo e denso..."></textarea>
+                </div>
+            </div>
+
+            <div class="action-container">
+                <button class="btn-submit" id="btnGerar">Projetar Prosa</button>
+                <button class="btn-secondary" id="btnLimpar">Limpar Formulário</button>
+            </div>
+        </aside>
+
+        <main class="reading-panel">
+            <div class="reading-panel-header">
+                <span>Manuscrito Gerado</span>
+                <div class="reading-panel-controls">
+                    <button class="btn-text-action" id="btnPDF">Baixar PDF</button>
+                    <span id="bytesDisplay">0 BYTES TRANSMITIDOS</span>
+                </div>
+            </div>
+            <div class="manuscript-viewport" id="viewport">
+                <div class="placeholder-text" id="placeholder">
+                    Selecione as diretrizes estruturais ao lado e inicie o projeto para evocar o manuscrito.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = "https://gerador-de-conto-de-terror-ai.vercel.app/generate";
+        
+        // Memória para armazenar o objeto do conto gerado e possibilitar a exportação
+        let contoAtivo = null;
+
+        // Ícones SVG customizados e otimizados para cada modo
+        const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+        const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+
+        // CONFIGURAÇÃO DO ALTERNADOR DE TEMAS (CLARO / ESCURO)
+        const themeToggle = document.getElementById('themeToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const toggleText = document.getElementById('toggleText');
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            
+            const isLight = document.body.classList.contains('light-theme');
+            if (isLight) {
+                toggleIcon.innerHTML = moonSVG;
+                toggleText.innerText = "Modo Escuro";
+            } else {
+                toggleIcon.innerHTML = sunSVG;
+                toggleText.innerText = "Modo Claro";
+            }
+        });
+
+        // Controla abertura suave dos campos personalizados usando classes CSS
+        function checkCustomOption(id) {
+            const select = document.getElementById(id);
+            const box = document.getElementById(`${id}_box`);
+            const customInput = document.getElementById(`${id}/_custom`);
+            
+            if (select.value === 'custom') {
+                box.classList.add('visible');
+                const textarea = box.querySelector('textarea');
+                if (textarea) textarea.focus();
+            } else {
+                box.classList.remove('visible');
+            }
+        }
+
+        // FUNÇÃO PARA LIMPAR FORMULÁRIO
+        document.getElementById('btnLimpar').addEventListener('click', () => {
+            const selects = ['cenario', 'tipo_medo', 'estilo_escrita'];
+            
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                select.selectedIndex = 0;
+                
+                const customBox = document.getElementById(`${id}_box`);
+                if (customBox) {
+                    customBox.classList.remove('visible');
+                }
+                
+                const customInput = document.getElementById(`${id}_custom`);
+                if (customInput) {
+                    customInput.value = "";
+                }
+            });
+
+            // Oculta o botão de PDF e redefine o viewport
+            document.getElementById('btnPDF').style.display = 'none';
+            contoAtivo = null;
+
+            const viewport = document.getElementById('viewport');
+            viewport.innerHTML = `
+                <div class="placeholder-text" id="placeholder">
+                    Selecione as diretrizes estruturais ao lado e inicie o projeto para evocar o manuscrito.
+                </div>
+            `;
+            document.getElementById('bytesDisplay').innerText = "0 BYTES TRANSMITIDOS";
+        });
+
+        // GERAR CONTO
+        document.getElementById('btnGerar').addEventListener('click', async () => {
+            const getValor = (id) => {
+                const selectElement = document.getElementById(id);
+                if (selectElement.value === 'custom') {
+                    return document.getElementById(`${id}_custom`).value.trim();
+                }
+                return selectElement.value;
+            };
+
+            const cenario = getValor('cenario');
+            const tipo_medo = getValor('tipo_medo');
+            const estilo_escrita = getValor('estilo_escrita');
+            
+            if (!cenario || !tipo_medo || !estilo_escrita) {
+                alert("Por favor, preencha as descrições personalizadas antes de gerar.");
+                return;
+            }
+
+            const viewport = document.getElementById('viewport');
+            const btn = document.getElementById('btnGerar');
+            const bytesDisplay = document.getElementById('bytesDisplay');
+            const pulseIcon = document.getElementById('pulseIcon');
+            const statusText = document.getElementById('statusText');
+            const btnPDF = document.getElementById('btnPDF');
+            
+            // Estado de Carregamento Ativo
+            btn.disabled = true;
+            btn.innerText = "Projetando...";
+            btnPDF.style.display = 'none';
+            pulseIcon.classList.add('active');
+            statusText.innerText = "Transmitindo...";
+            viewport.innerHTML = `<div class="placeholder-text">Sincronizando canal literário...</div>`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cenario, tipo_medo, estilo_escrita })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    contoAtivo = data.dados_conto;
+                    exibirConto(data.dados_conto);
+                    btnPDF.style.display = 'block'; // Mostra o botão para baixar PDF
+                } else {
+                    throw new Error(data.message || "Anomalia Narrativa inesperada.");
+                }
+
+            } catch (error) {
+                console.error(error);
+                viewport.innerHTML = `
+                    <div class="error-card">
+                        <div class="error-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="error-title">Sinal Corrompido</div>
+                        <div class="error-message">${error.message}</div>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Projetar Prosa";
+                pulseIcon.classList.remove('active');
+                statusText.innerText = "Sistema Ocioso";
+            }
+        });
+
+        function exibirConto(conto) {
+            const viewport = document.getElementById('viewport');
+            viewport.innerHTML = ""; // Limpa o placeholder
+
+            // Título
+            const elTitulo = document.createElement('h2');
+            elTitulo.className = 'manuscript-title';
+            elTitulo.innerText = conto.titulo;
+            viewport.appendChild(elTitulo);
+
+            // Introdução
+            const elIntro = document.createElement('p');
+            elIntro.className = 'manuscript-paragraph';
+            elIntro.innerText = conto.introducao_cenario;
+            viewport.appendChild(elIntro);
+
+            // Desenvolvimento
+            const elDesenv = document.createElement('p');
+            elDesenv.className = 'manuscript-paragraph';
+            elDesenv.innerText = conto.desenvolvimento_suspense;
+            viewport.appendChild(elDesenv);
+
+            // Clímax
+            const elClimax = document.createElement('p');
+            elClimax.className = 'manuscript-paragraph';
+            elClimax.innerText = conto.climax_psicologico;
+            viewport.appendChild(elClimax);
+
+            // Desfecho
+            const elDesfecho = document.createElement('p');
+            elDesfecho.className = 'manuscript-paragraph';
+            elDesfecho.innerText = conto.desfecho_ambiguo;
+            viewport.appendChild(elDesfecho);
+
+            // Rola suavemente até o início do conto recém-gerado
+            viewport.scrollTop = 0;
+            
+            // Registra os bytes transmitidos aproximados baseados no tamanho do texto
+            const totalCaracteres = JSON.stringify(conto).length;
+            document.getElementById('bytesDisplay').innerText = `${totalCaracteres} BYTES TRANSMITIDOS`;
+        }
+
+        // EXPORTAR PARA PDF COM FORMATAÇÃO EDITORIAL CLÁSSICA
+        document.getElementById('btnPDF').addEventListener('click', () => {
+            if (!contoAtivo) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const margin = 24;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const maxLineWidth = pageWidth - (margin * 2);
+
+            // Configuração do Título
+            doc.setFont("times", "bold");
+            doc.setFontSize(22);
+
+            const titulo = contoAtivo.titulo.toUpperCase();
+            const tituloLinhas = doc.splitTextToSize(titulo, maxLineWidth);
+            let currentY = 35;
+
+            tituloLinhas.forEach(line => {
+                const textWidth = doc.getTextWidth(line);
+                const x = (pageWidth - textWidth) / 2;
+                doc.text(line, x, currentY);
+                currentY += 8;
+            });
+
+            currentY += 12; // Espaçamento abaixo do título
+
+            // Configuração do Corpo de Texto
+            doc.setFont("times", "normal");
+            doc.setFontSize(12);
+
+            const paragrafos = [
+                contoAtivo.introducao_cenario,
+                contoAtivo.desenvolvimento_suspense,
+                contoAtivo.climax_psicologico,
+                contoAtivo.desfecho_ambiguo
+            ];
+
+            const paragraphIndent = 12; // Recuo clássico de parágrafo
+
+            paragrafos.forEach(paragrafo => {
+                if (!paragrafo) return;
+
+                const linhas = doc.splitTextToSize(paragrafo, maxLineWidth);
+
+                linhas.forEach((linha, index) => {
+                    // Verifica se é necessário quebrar a página com margem segura
+                    if (currentY > pageHeight - 25) {
+                        doc.addPage();
+                        currentY = 25;
+                        doc.setFont("times", "normal");
+                        doc.setFontSize(12);
+                    }
+
+                    let xPosition = margin;
+                    // Aplica recuo de primeira linha apenas no início do parágrafo
+                    if (index === 0) {
+                        xPosition += paragraphIndent;
+                    }
+
+                    doc.text(linha, xPosition, currentY);
+                    currentY += 7.5; // Espaçamento entre linhas (leading)
+                });
+
+                currentY += 6; // Espaçamento extra entre parágrafos
+            });
+
+            // Formatação do nome de arquivo
+            const nomeArquivo = contoAtivo.titulo.toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Remove acentuações
+                .replace(/[^a-z0-9]/g, '_')
+                .replace(/_+/g, '_') + '.pdf';
+
+            doc.save(nomeArquivo);
+        });
+    </script>
+</body>
+</html>

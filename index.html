@@ -3,49 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARQUIVO NEXUS // Análise Criminológica Avançada</title>
+    <title>SISTEMA NEXUS // Divisão de Análise de Riscos e Segurança Nacional</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=JetBrains+Mono:wght@200;300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         :root {
-            --bg-deep: #080a0f;
-            --bg-card: rgba(15, 22, 36, 0.96);
-            --accent-blue: #0284c7;
-            --accent-glow: rgba(2, 132, 199, 0.15);
+            /* Tema Escuro - Nocturne Crimson (Premium) */
+            --bg-deep: #060709;
+            --bg-card: rgba(12, 14, 18, 0.98);
+            --accent-red: #9e0a2b;
+            --accent-red-bright: #e6194b;
+            --accent-red-rgb: 158, 10, 43;
+            --accent-glow: rgba(158, 10, 43, 0.05);
             --text-main: #f1f5f9;
             --text-muted: #64748b;
-            --border-subtle: rgba(2, 132, 199, 0.2);
-            --border-focus: rgba(2, 132, 199, 0.6);
-            --input-bg: #0b0f17;
-            --viewport-bg: rgba(11, 15, 23, 0.7);
+            --border-subtle: rgba(158, 10, 43, 0.18);
+            --border-focus: rgba(230, 25, 75, 0.4);
+            --input-bg: #090b0e;
+            --viewport-bg: #07080a;
             --title-color: #f8fafc;
             --paragraph-color: #cbd5e1;
-            --shadow-intensity: rgba(0, 0, 0, 0.6);
-            --tab-active: rgba(2, 132, 199, 0.1);
+            --shadow-intensity: rgba(0, 0, 0, 0.95);
+            --tab-active: rgba(158, 10, 43, 0.06);
+            --pill-bg: rgba(158, 10, 43, 0.02);
+            --pill-border: rgba(158, 10, 43, 0.12);
             
-            --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         body.light-theme {
-            --bg-deep: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.98);
-            --accent-blue: #0369a1;
-            --accent-glow: rgba(3, 105, 161, 0.1);
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-subtle: rgba(3, 105, 161, 0.2);
-            --border-focus: rgba(3, 105, 161, 0.5);
-            --input-bg: #f1f5f9;
-            --viewport-bg: rgba(241, 245, 249, 0.75);
-            --title-color: #0f172a;
-            --paragraph-color: #334155;
-            --shadow-intensity: rgba(148, 163, 184, 0.2);
-            --tab-active: rgba(3, 105, 161, 0.08);
+            /* Tema Claro - Alabastro / Arquivo de Investigação Preservado */
+            --bg-deep: #e2ded5;
+            --bg-card: #fbf9f5;
+            --accent-red: #6d0a1d;
+            --accent-red-bright: #8a0e25;
+            --accent-red-rgb: 109, 10, 29;
+            --accent-glow: rgba(109, 10, 29, 0.04);
+            --text-main: #1d1b18;
+            --text-muted: #726c62;
+            --border-subtle: rgba(109, 10, 29, 0.2);
+            --border-focus: rgba(109, 10, 29, 0.5);
+            --input-bg: #ffffff;
+            --viewport-bg: #f3f0e6;
+            --title-color: #12100e;
+            --paragraph-color: #2e2a25;
+            --shadow-intensity: rgba(109, 10, 29, 0.12);
+            --tab-active: rgba(109, 10, 29, 0.05);
+            --pill-bg: rgba(109, 10, 29, 0.03);
+            --pill-border: rgba(109, 10, 29, 0.15);
         }
 
         * {
@@ -63,42 +73,75 @@
             justify-content: center;
             align-items: center;
             padding: 24px;
-            overflow-x: hidden;
+            overflow: hidden;
             transition: var(--transition-smooth);
+            position: relative;
         }
 
+        /* Vinheta refinada nas extremidades */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.95) 100%);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        body.light-theme::before {
+            background: radial-gradient(circle, transparent 65%, rgba(109, 10, 29, 0.1) 100%);
+        }
+
+        /* Grelha tática sutil */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(158, 10, 43, 0.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(158, 10, 43, 0.012) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 11;
+            pointer-events: none;
+        }
+
+        /* ESTRUTURA PRINCIPAL */
         .app-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1350px;
+            height: 88vh;
+            max-height: 860px;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 25px 60px var(--shadow-intensity);
+            border-top: 3px solid var(--accent-red);
+            border-radius: 4px;
+            padding: 32px;
+            box-shadow: 0 50px 120px var(--shadow-intensity);
             display: grid;
-            grid-template-columns: 360px 1fr;
+            grid-template-columns: 310px 1fr;
             grid-template-rows: auto 1fr;
-            gap: 30px;
+            gap: 32px;
+            position: relative;
+            z-index: 20;
             transition: var(--transition-smooth);
         }
 
-        @media (min-width: 961px) {
-            .app-container {
-                height: 92vh;
-                max-height: 940px;
-            }
-        }
-
-        @media (max-width: 960px) {
+        @media (max-width: 1024px) {
             .app-container {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto auto;
-                padding: 20px;
-                gap: 20px;
+                height: auto;
+                max-height: none;
+                padding: 24px;
+                gap: 24px;
+                overflow: visible;
+            }
+            body {
+                overflow: auto;
             }
         }
 
-        /* HEADER */
+        /* CABEÇALHO */
         header {
             grid-column: 1 / -1;
             border-bottom: 1px solid var(--border-subtle);
@@ -110,86 +153,106 @@
             gap: 20px;
         }
 
-        h1 {
-            font-family: 'JetBrains Mono', monospace;
+        .header-brand h1 {
+            font-family: 'Cinzel', serif;
             font-size: 1.4rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 5px;
             color: var(--title-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        h1 span {
-            color: var(--accent-blue);
+        .header-brand h1 span {
+            color: var(--accent-red);
         }
 
         .subtitle {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 6px;
             font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            display: block;
         }
 
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
         }
 
         .theme-toggle {
-            background-color: var(--toggle-bg);
+            background-color: transparent;
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
             padding: 8px 16px;
-            border-radius: 4px;
+            border-radius: 2px;
             cursor: pointer;
             font-size: 0.65rem;
             font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             transition: var(--transition-smooth);
         }
 
         .theme-toggle:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 10px var(--accent-glow);
+            border-color: var(--accent-red);
+            background: var(--tab-active);
+            color: var(--accent-red-bright);
         }
 
-        .status-panel {
+        .status-badge {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 8px 14px;
+            border: 1px solid var(--border-subtle);
+            background-color: var(--pill-bg);
+            border-radius: 2px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
+            font-size: 0.62rem;
+            color: var(--accent-red);
+            font-weight: 700;
+            letter-spacing: 1.5px;
         }
 
         .status-dot {
             width: 6px;
             height: 6px;
-            background-color: var(--text-muted);
+            background-color: var(--accent-red);
             border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-red);
         }
 
         .status-dot.active {
-            background-color: var(--accent-blue);
-            box-shadow: 0 0 10px var(--accent-blue);
-            animation: pulse 2s infinite;
+            animation: pulse-dot 1.8s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.3); opacity: 1; }
         }
 
-        /* SIDEBAR DE PESQUISA */
+        /* SIDEBAR */
         .sidebar {
             grid-column: 1;
             grid-row: 2;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                overflow-y: visible;
+                padding-right: 0;
+            }
         }
 
         .input-group {
@@ -199,22 +262,30 @@
         }
 
         label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label::before {
+            content: '//';
+            color: var(--accent-red);
         }
 
         input[type="text"] {
             background-color: var(--input-bg);
             border: 1px solid var(--border-subtle);
-            border-radius: 4px;
+            border-radius: 2px;
             color: var(--text-main);
-            padding: 14px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            padding: 12px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
             outline: none;
             width: 100%;
             transition: var(--transition-smooth);
@@ -225,99 +296,156 @@
             box-shadow: 0 0 12px var(--accent-glow);
         }
 
+        /* ATALHOS RÁPIDOS */
+        .quick-consultation {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .pills-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .pill-item {
+            background-color: var(--pill-bg);
+            border: 1px solid var(--pill-border);
+            color: var(--text-muted);
+            padding: 8px;
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .pill-item:hover {
+            border-color: var(--accent-red);
+            background-color: var(--tab-active);
+            color: var(--text-main);
+        }
+
         .btn-submit {
-            background-color: var(--accent-blue);
+            background-color: var(--accent-red);
             color: #ffffff;
             border: none;
-            border-radius: 4px;
-            padding: 16px;
+            border-radius: 2px;
+            padding: 14px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transition: var(--transition-smooth);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-submit:hover:not(:disabled) {
-            filter: brightness(1.1);
-            box-shadow: 0 6px 15px var(--accent-glow);
+            background-color: var(--accent-red-bright);
+            box-shadow: 0 0 15px rgba(var(--accent-red-rgb), 0.3);
         }
 
         .btn-submit:disabled {
-            background-color: var(--toggle-bg);
+            background-color: var(--pill-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-subtle);
             cursor: not-allowed;
+            box-shadow: none;
         }
 
-        /* NAVEGAÇÃO INTERNA DO DOSSIÊ (ÍNDICE) */
+        /* ABAS FORMATO DOSSIÊ */
         .dossier-index {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 2px;
+            margin-top: 8px;
             border-top: 1px solid var(--border-subtle);
-            padding-top: 15px;
+            padding-top: 16px;
         }
 
         .index-title {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             margin-bottom: 8px;
         }
 
         .index-item {
             background: transparent;
             border: 1px solid transparent;
+            border-left: 2px solid transparent;
             color: var(--text-muted);
             padding: 10px 14px;
             text-align: left;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            border-radius: 4px;
+            font-size: 0.68rem;
             cursor: pointer;
             transition: var(--transition-smooth);
         }
 
         .index-item.active {
-            color: var(--accent-blue);
-            border-color: var(--border-subtle);
+            color: var(--accent-red);
+            border-left: 2px solid var(--accent-red);
             background-color: var(--tab-active);
             font-weight: 700;
         }
 
         .index-item:hover:not(.active) {
             color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(var(--accent-red-rgb), 0.02);
         }
 
-        /* CONTAINER DE RELATÓRIO */
+        /* ÁREA DO VISUALIZADOR DE DADOS */
         .reading-panel {
             grid-column: 2;
             grid-row: 2;
             background-color: var(--viewport-bg);
             border: 1px solid var(--border-subtle);
-            border-radius: 4px;
+            border-radius: 3px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             transition: var(--transition-smooth);
+            position: relative;
         }
 
-        @media (max-width: 960px) {
-            .reading-panel {
-                height: 600px;
-            }
+        /* Cantoneiras de mira tática (HUD Elegante) */
+        .reading-panel::before, .reading-panel::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--border-subtle);
+            pointer-events: none;
+            z-index: 5;
+        }
+        /* Topo Esquerdo */
+        .reading-panel::before {
+            top: 12px; left: 12px;
+            border-right: none; border-bottom: none;
+        }
+        /* Base Direita */
+        .reading-panel::after {
+            bottom: 12px; right: 12px;
+            border-left: none; border-top: none;
         }
 
         .reading-panel-header {
             padding: 14px 24px;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-muted);
@@ -327,171 +455,314 @@
             align-items: center;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.15);
         }
 
         .btn-text-action {
             background: transparent;
-            border: 1px solid var(--accent-blue);
-            color: var(--accent-blue);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             padding: 6px 12px;
-            border-radius: 4px;
+            border-radius: 2px;
             transition: var(--transition-smooth);
             display: none;
         }
 
         .btn-text-action:hover {
-            background-color: var(--accent-blue);
+            background-color: var(--accent-red);
             color: #ffffff;
-            box-shadow: 0 4px 10px var(--accent-glow);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .viewport-content {
-            padding: 30px;
+            padding: 40px;
             overflow-y: auto;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            gap: 28px;
+            background-image: 
+                radial-gradient(rgba(158, 10, 43, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+        }
+
+        /* Marca d'água em background */
+        .viewport-watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(var(--accent-red-rgb), 0.02);
+            pointer-events: none;
+            letter-spacing: 10px;
+            user-select: none;
+            z-index: 1;
+        }
+
+        /* ESTADO INATIVO */
+        .idle-terminal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             gap: 24px;
-        }
-
-        .placeholder-text {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            text-align: center;
             margin: auto;
-            max-width: 420px;
-            line-height: 1.8;
+            max-width: 440px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+            z-index: 2;
         }
 
-        /* RENDERIZADOR DAS SEÇÕES DO DOSSIÊ */
+        .idle-emblem {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--pill-bg);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .idle-emblem svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-red);
+        }
+
+        .idle-text {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+        }
+
+        /* RENDERS DINÂMICOS */
         .dossier-layout {
             animation: fadeIn 0.4s ease-out;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 28px;
+            z-index: 2;
         }
 
         .header-dossier {
-            border-bottom: 2px solid var(--accent-blue);
-            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 16px;
+            position: relative;
+        }
+
+        .header-dossier::after {
+            content: 'REGISTRO DE INFORMAÇÕES CONFIDENCIAIS';
+            position: absolute;
+            top: 0; right: 0;
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            letter-spacing: 1px;
+            border-radius: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .header-dossier::after {
+                display: none;
+            }
         }
 
         .header-dossier-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
             color: var(--title-color);
             font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .header-dossier-meta {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--accent-blue);
-            margin-top: 4px;
+            font-size: 0.72rem;
+            color: var(--accent-red);
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        /* METRIC CARDS */
+        /* METRICAS / FORMULÁRIO */
         .grid-metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
         }
 
         .metric-card {
-            background-color: rgba(0, 0, 0, 0.2);
-            border: 1px dashed var(--border-subtle);
-            border-radius: 4px;
-            padding: 14px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-subtle);
+            border-top: 2px solid var(--accent-red);
+            border-radius: 2px;
+            padding: 16px;
+        }
+
+        body.light-theme .metric-card {
+            background-color: rgba(109, 10, 29, 0.02);
         }
 
         .metric-label {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            letter-spacing: 1.2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-label::before {
+            content: '■';
+            font-size: 5px;
+            color: var(--accent-red);
         }
 
         .metric-value {
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 500;
             color: var(--title-color);
-            line-height: 1.4;
+            line-height: 1.5;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* TEXT BLOCK */
+        /* TEXT BLOCKS */
         .block-text {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .block-header {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            color: var(--accent-blue);
-            border-left: 3px solid var(--accent-blue);
-            padding-left: 8px;
+            color: var(--accent-red);
+            border-left: 2px solid var(--accent-red);
+            padding-left: 12px;
             font-weight: 700;
+            letter-spacing: 1.5px;
         }
 
         .block-body {
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.88rem;
+            line-height: 1.8;
             color: var(--paragraph-color);
             text-align: justify;
         }
 
+        /* ELEMENTO PARA DADOS AUSENTES */
+        .data-unavailable {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 500;
+            background: rgba(158, 10, 43, 0.03);
+            padding: 4px 8px;
+            border-radius: 2px;
+            border: 1px dashed var(--border-subtle);
+            display: inline-block;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ERROR CARD */
+        /* LOADING ELEGANTE */
+        .scanning-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin: auto;
+            color: var(--accent-red);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .radar-spinner {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 50%;
+            position: relative;
+            animation: rotate-radar 1.5s linear infinite;
+        }
+
+        .radar-spinner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 1px solid transparent;
+            border-top-color: var(--accent-red);
+            border-radius: 50%;
+        }
+
+        @keyframes rotate-radar {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ERRO */
         .error-card {
-            border: 1px solid #ef4444;
-            background: rgba(239, 68, 68, 0.05);
-            padding: 24px;
-            border-radius: 4px;
-            max-width: 450px;
+            border: 1px solid var(--accent-red);
+            background: rgba(158, 10, 43, 0.02);
+            padding: 28px;
+            border-radius: 2px;
+            max-width: 440px;
             margin: auto;
             text-align: center;
         }
 
         .error-title {
-            color: #ef4444;
+            color: var(--accent-red);
             font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
             margin-bottom: 12px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
         }
 
         .error-desc {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             line-height: 1.6;
             color: var(--text-main);
         }
 
         ::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
             background: var(--border-subtle);
-            border-radius: 2px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-blue);
+            background: var(--accent-red);
         }
     </style>
 </head>
@@ -499,67 +770,94 @@
 
     <div class="app-container">
         <header>
-            <div>
-                <h1>ARQUIVO NEXUS <span>//</span></h1>
-                <span class="subtitle">Análise Forense e Dossiês Criminais de interesse público</span>
+            <div class="header-brand">
+                <h1>NEXUS // <span>ARCHIVES</span></h1>
+                <span class="subtitle">Análise Geopolítica de Riscos e Históricos Prisionais</span>
             </div>
             
             <div class="header-controls">
-                <button class="theme-toggle" id="themeToggle">Modo Claro</button>
-                <div class="status-panel">
-                    <span class="status-dot" id="statusDot"></span>
-                    <span id="statusText">Terminal Ocioso</span>
+                <button class="theme-toggle" id="themeToggle">Dossiê Físico</button>
+                <div class="status-badge">
+                    <span class="status-dot active" id="statusDot"></span>
+                    <span id="statusText">LINK OFICIAL</span>
                 </div>
             </div>
         </header>
 
         <aside class="sidebar">
             <div class="input-group">
-                <label for="nome_pesquisa">Nome da Figura Pública</label>
-                <input type="text" id="nome_pesquisa" placeholder="Ex: Ted Bundy, Fernandinho Beira-Mar..." autocomplete="off">
+                <label for="nome_pesquisa">Identificação Penal de Alvo</label>
+                <input type="text" id="nome_pesquisa" placeholder="Nome ou alcunha de registro..." autocomplete="off">
             </div>
 
-            <button class="btn-submit" id="btnConsultar">Executar Varredura</button>
+            <!-- Painel de Dossiês Frequentes -->
+            <div class="quick-consultation">
+                <label>Casos Armazenados</label>
+                <div class="pills-container">
+                    <span class="pill-item" onclick="ativarAtalho('Ted Bundy')" title="Ted Bundy">Ted Bundy</span>
+                    <span class="pill-item" onclick="ativarAtalho('Al Capone')" title="Al Capone">Al Capone</span>
+                    <span class="pill-item" onclick="ativarAtalho('Suzane von Richthofen')" title="Suzane v. Richthofen">S. Richthofen</span>
+                    <span class="pill-item" onclick="ativarAtalho('Jack, o Estripador')" title="Jack, o Estripador">Jack o Estripador</span>
+                </div>
+            </div>
 
-            <!-- Menu de Navegação Rápida das Seções (Inserido Dinamicamente) -->
+            <button class="btn-submit" id="btnConsultar">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                Executar Varredura
+            </button>
+
+            <!-- Menu de Navegação do Dossiê -->
             <div class="dossier-index" id="dossierIndex" style="display: none;">
-                <span class="index-title">Seções do Dossiê</span>
-                <button class="index-item active" onclick="switchSection('geral')">01 // Ficha Geral</button>
-                <button class="index-item" onclick="switchSection('origem')">02 // Histórico Familiar</button>
-                <button class="index-item" onclick="switchSection('atividades')">03 // Atividade Criminal</button>
-                <button class="index-item" onclick="switchSection('captura')">04 // Investigação & Júri</button>
-                <button class="index-item" onclick="switchSection('custodia')">05 // Custódia & Regime</button>
-                <button class="index-item" onclick="switchSection('impacto')">06 // Impacto & Mídia</button>
+                <span class="index-title">Seções Documentais</span>
+                <button class="index-item active" onclick="switchSection('geral')">01 // Sumário do Caso</button>
+                <button class="index-item" onclick="switchSection('origem')">02 // Antecedentes & Infância</button>
+                <button class="index-item" onclick="switchSection('atividades')">03 // Modus Operandi</button>
+                <button class="index-item" onclick="switchSection('captura')">04 // Julgamento & Sentença</button>
+                <button class="index-item" onclick="switchSection('custodia')">05 // Custódia Atual</button>
+                <button class="index-item" onclick="switchSection('impacto')">06 // Impacto Legislativo</button>
             </div>
         </aside>
 
         <main class="reading-panel">
             <div class="reading-panel-header">
-                <span>Dossiê Consolidado</span>
-                <button class="btn-text-action" id="btnPDF">Exportar Relatório Geral (PDF)</button>
+                <span>Relatório Custodial Restrito</span>
+                <button class="btn-text-action" id="btnPDF">Exportar Relatório (PDF)</button>
             </div>
             
             <div class="viewport-content" id="viewport">
-                <div class="placeholder-text">
-                    Aguardando entrada de pesquisa. Insira o nome de um indivíduo relevante para levantar e consolidar o histórico carcerário estruturado.
+                <!-- Marca d'água de background -->
+                <div class="viewport-watermark">NEXUS</div>
+                
+                <div class="idle-terminal">
+                    <div class="idle-emblem">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </div>
+                    <div class="idle-text">
+                        Aguardando identificação penal do indivíduo.<br>
+                        Selecione um dos registros históricos arquivados ou digite um nome de interesse acima.
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        const API_URL = "https://gerador-de-conto-de-terror-ai.vercel.app/generate";
+        const API_URL = "http://127.0.0.1:5000/generate";
         let dossieAtivo = null;
 
-        // Toggle do Tema
+        // Alternador de Temas
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-theme');
             const isLight = document.body.classList.contains('light-theme');
-            themeToggle.innerText = isLight ? "Modo Escuro" : "Modo Claro";
+            themeToggle.innerText = isLight ? "Terminal Digital" : "Dossiê Físico";
         });
 
-        // Eventos de Busca
+        // Eventos
         const btnConsultar = document.getElementById('btnConsultar');
         const inputPesquisa = document.getElementById('nome_pesquisa');
 
@@ -568,10 +866,22 @@
             if (e.key === 'Enter') consultarCaso();
         });
 
+        function ativarAtalho(nome) {
+            inputPesquisa.value = nome;
+            consultarCaso();
+        }
+
+        function safeGet(value, placeholder = "INFORMAÇÃO CONFIDENCIAL / SEGREDO DE ESTADO") {
+            if (value === undefined || value === null || String(value).trim() === "") {
+                return `<span class="data-unavailable">// ${placeholder}</span>`;
+            }
+            return value;
+        }
+
         async function consultarCaso() {
             const nome_pesquisa = inputPesquisa.value.trim();
             if (!nome_pesquisa) {
-                alert("Insira um nome válido para pesquisa.");
+                alert("Identifique um alvo para consulta.");
                 return;
             }
 
@@ -582,12 +892,19 @@
             const indexMenu = document.getElementById('dossierIndex');
 
             btnConsultar.disabled = true;
-            btnConsultar.innerText = "Consultando...";
+            btnConsultar.innerText = "Interrogando...";
             btnPDF.style.display = 'none';
             indexMenu.style.display = 'none';
             statusDot.classList.add('active');
-            statusText.innerText = "Rastreando base criminológica...";
-            viewport.innerHTML = `<div class="placeholder-text">Extraindo dados biográficos, modus operandi, sentenças e registros penais...</div>`;
+            statusText.innerText = "VARREDURA ATIVA";
+            
+            viewport.innerHTML = `
+                <div class="viewport-watermark">NEXUS</div>
+                <div class="scanning-loader">
+                    <div class="radar-spinner"></div>
+                    <div>Interrogando banco de dados federais...</div>
+                </div>
+            `;
 
             try {
                 const response = await fetch(API_URL, {
@@ -607,50 +924,48 @@
                         switchSection('geral');
                     } else {
                         viewport.innerHTML = `
+                            <div class="viewport-watermark">NEXUS</div>
                             <div class="error-card">
-                                <div class="error-title">Consulta Negada</div>
-                                <div class="error-desc">${dados.justificativa_invalida || "O alvo não atende aos pré-requisitos de figura penal de interesse público."}</div>
+                                <div class="error-title">Busca Inválida / Bloqueada</div>
+                                <div class="error-desc">${safeGet(dados.justificativa_invalida, "A pesquisa violou as diretrizes de sigilo ou o registro inexiste nos arquivos de segurança nacional.")}</div>
                             </div>
                         `;
                     }
                 } else {
-                    throw new Error(rData.message || "Instabilidade no sistema do servidor.");
+                    throw new Error(rData.message || "Não foi possível obter resposta da central.");
                 }
 
             } catch (error) {
                 console.error(error);
                 viewport.innerHTML = `
+                    <div class="viewport-watermark">NEXUS</div>
                     <div class="error-card">
-                        <div class="error-title">Erro de Processamento</div>
-                        <div class="error-desc">Não foi possível estabelecer contato com o processador. Erro: <strong>${error.message}</strong>.</div>
+                        <div class="error-title">Falha na Comunicação</div>
+                        <div class="error-desc">Não foi possível estabelecer contato com a base Nexus local. <br><br>Erro detectado: <strong>${error.message}</strong>.</div>
                     </div>
                 `;
             } finally {
                 btnConsultar.disabled = false;
                 btnConsultar.innerText = "Executar Varredura";
-                statusDot.classList.remove('active');
-                statusText.innerText = "Terminal Ocioso";
+                statusText.innerText = "LINK OFICIAL";
             }
         }
 
-        // Navegação por Seções do Dossiê
         function switchSection(secao) {
             if (!dossieAtivo) return;
 
-            // Gerencia classes Ativas do menu lateral
             const items = document.querySelectorAll('.index-item');
             items.forEach(btn => btn.classList.remove('active'));
 
             const viewport = document.getElementById('viewport');
-            viewport.innerHTML = "";
+            viewport.innerHTML = `<div class="viewport-watermark">NEXUS</div>`;
 
             let contentHTML = "";
 
-            // Cabeçalho Padrão para manter a identidade do indivíduo selecionado
             const cabecalhoHTML = `
                 <div class="header-dossier">
-                    <div class="header-dossier-title">${dossieAtivo.nome_completo}</div>
-                    <div class="header-dossier-meta">Alcunha(s): ${dossieAtivo.alcunhas_pseudonimos || 'Nenhuma registrada oficialmente'}</div>
+                    <div class="header-dossier-title">${safeGet(dossieAtivo.nome_completo, "DADO NÃO LOCALIZADO")}</div>
+                    <div class="header-dossier-meta">Alcunha: ${safeGet(dossieAtivo.alcunhas_pseudonimos, "NENHUM HISTÓRICO DE ALCUNHA")}</div>
                 </div>
             `;
 
@@ -661,17 +976,17 @@
                         ${cabecalhoHTML}
                         <div class="grid-metrics">
                             <div class="metric-card">
-                                <div class="metric-label">Identidade Registrada</div>
-                                <div class="metric-value">${dossieAtivo.nome_completo}</div>
+                                <div class="metric-label">Identificação Civil</div>
+                                <div class="metric-value">${safeGet(dossieAtivo.nome_completo)}</div>
                             </div>
                             <div class="metric-card">
-                                <div class="metric-label">Dados Biográficos Gerais</div>
-                                <div class="metric-value">${dossieAtivo.dados_biograficos_basicos}</div>
+                                <div class="metric-label">Estrutura Biográfica</div>
+                                <div class="metric-value">${safeGet(dossieAtivo.dados_biograficos_basicos)}</div>
                             </div>
                         </div>
                         <div class="block-text">
                             <div class="block-header">Resumo do Caso</div>
-                            <div class="block-body">${dossieAtivo.resumo_caso}</div>
+                            <div class="block-body">${safeGet(dossieAtivo.resumo_caso)}</div>
                         </div>
                     `;
                     break;
@@ -680,12 +995,12 @@
                     contentHTML = `
                         ${cabecalhoHTML}
                         <div class="block-text">
-                            <div class="block-header">Histórico Familiar & Infância</div>
-                            <div class="block-body">${dossieAtivo.infancia_desenvolvimento}</div>
+                            <div class="block-header">Origem & Fatores de Desenvolvimento</div>
+                            <div class="block-body">${safeGet(dossieAtivo.infancia_desenvolvimento)}</div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Primeiros Desvios & Delitos</div>
-                            <div class="block-body">${dossieAtivo.antecedentes_primeiros_delitos}</div>
+                            <div class="block-header">Primeiros Delitos Registrados</div>
+                            <div class="block-body">${safeGet(dossieAtivo.antecedentes_primeiros_delitos)}</div>
                         </div>
                     `;
                     break;
@@ -694,16 +1009,16 @@
                     contentHTML = `
                         ${cabecalhoHTML}
                         <div class="block-text">
-                            <div class="block-header">Cronologia Criminal de Atos Principais</div>
-                            <div class="block-body">${dossieAtivo.cronologia_crimes_principais}</div>
+                            <div class="block-header">Cronologia dos Crimes Principais</div>
+                            <div class="block-body">${safeGet(dossieAtivo.cronologia_crimes_principais)}</div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Modus Operandi de Atuação</div>
-                            <div class="block-body">${dossieAtivo.modus_operandi_tecnico}</div>
+                            <div class="block-header">Modus Operandi Tático</div>
+                            <div class="block-body">${safeGet(dossieAtivo.modus_operandi_tecnico)}</div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Perfil Psiquiátrico / Comportamental Mapeado</div>
-                            <div class="block-body">${dossieAtivo.perfil_psicologico_diagnostico}</div>
+                            <div class="block-header">Laudo Comportamental de Diagnóstico</div>
+                            <div class="block-body">${safeGet(dossieAtivo.perfil_psicologico_diagnostico)}</div>
                         </div>
                     `;
                     break;
@@ -712,12 +1027,12 @@
                     contentHTML = `
                         ${cabecalhoHTML}
                         <div class="block-text">
-                            <div class="block-header">Investigação Policial & Captura</div>
-                            <div class="block-body">${dossieAtivo.investigacao_captura}</div>
+                            <div class="block-header">Operações Investigativas & Captura</div>
+                            <div class="block-body">${safeGet(dossieAtivo.investigacao_captura)}</div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Julgamento e Sentença Fixada</div>
-                            <div class="block-body">${dossieAtivo.processo_julgamento_sentenca}</div>
+                            <div class="block-header">Instrução Criminal, Dosimetria e Pena</div>
+                            <div class="block-body">${safeGet(dossieAtivo.processo_julgamento_sentenca)}</div>
                         </div>
                     `;
                     break;
@@ -727,21 +1042,21 @@
                         ${cabecalhoHTML}
                         <div class="grid-metrics">
                             <div class="metric-card">
-                                <div class="metric-label">Regime Penal de Custódia</div>
-                                <div class="metric-value">${dossieAtivo.regime_atual}</div>
+                                <div class="metric-label">Regime Prisional</div>
+                                <div class="metric-value">${safeGet(dossieAtivo.regime_penal_atual)}</div>
                             </div>
                             <div class="metric-card">
-                                <div class="metric-label">Dosimetria Total da Pena</div>
-                                <div class="metric-value">${dossieAtivo.anos_condenacao}</div>
+                                <div class="metric-label">Pena Restante / Estipulada</div>
+                                <div class="metric-value">${safeGet(dossieAtivo.anos_condenacao)}</div>
                             </div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Conduta Prisional</div>
-                            <div class="block-body">${dossieAtivo.vida_carceraria_comportamento}</div>
+                            <div class="block-header">Histórico de Comportamento Carcerário</div>
+                            <div class="block-body">${safeGet(dossieAtivo.vida_carceraria_comportamento)}</div>
                         </div>
                         <div class="block-text">
-                            <div class="block-header">Situação do Indivíduo no Presente</div>
-                            <div class="block-body">${dossieAtivo.situacao_atual_hoje}</div>
+                            <div class="block-header">Situação Atual do Indivíduo</div>
+                            <div class="block-body">${safeGet(dossieAtivo.situacao_atual_hoje)}</div>
                         </div>
                     `;
                     break;
@@ -750,18 +1065,21 @@
                     contentHTML = `
                         ${cabecalhoHTML}
                         <div class="block-text">
-                            <div class="block-header">Impacto Sociocultural, Jurídico & Legado</div>
-                            <div class="block-body">${dossieAtivo.impacto_social_legado}</div>
+                            <div class="block-header">Legado Social, Mídia e Modificações Legislativas</div>
+                            <div class="block-body">${safeGet(dossieAtivo.impacto_social_legado)}</div>
                         </div>
                     `;
                     break;
             }
 
-            viewport.innerHTML = `<div class="dossier-layout">${contentHTML}</div>`;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'dossier-layout';
+            wrapper.innerHTML = contentHTML;
+            viewport.appendChild(wrapper);
             viewport.scrollTop = 0;
         }
 
-        // Geração Unificada do Relatório PDF Completo
+        // Exportação de PDF Formatado
         document.getElementById('btnPDF').addEventListener('click', () => {
             if (!dossieAtivo) return;
 
@@ -778,54 +1096,62 @@
             const maxLineWidth = pageWidth - (margin * 2);
             let currentY = 25;
 
-            // Cabeçalho estrutural de arquivo
+            // Cabeçalho de Inteligência Tática no PDF
             doc.setFont("courier", "bold");
-            doc.setFontSize(14);
-            doc.text("ARQUIVO NEXUS // SISTEMA FORENSE", margin, currentY);
+            doc.setFontSize(13);
+            doc.setTextColor(109, 10, 29); // Cor Carmesim
+            doc.text("ARQUIVO NEXUS // DEPARTAMENTO DE INTELIGENCIA NACIONAL", margin, currentY);
             currentY += 6;
+            
             doc.setFontSize(9);
-            doc.text(`REGISTRO COMPLETO DE EXPEDIÇÃO PENAL: ${dossieAtivo.nome_completo.toUpperCase()}`, margin, currentY);
+            doc.setTextColor(40, 40, 40);
+            doc.text(`REGISTRO COMPACTO DE HISTORICO CRIMINAL: ${dossieAtivo.nome_completo.toUpperCase()}`, margin, currentY);
             currentY += 4;
+            
+            doc.setDrawColor(109, 10, 29);
             doc.line(margin, currentY, pageWidth - margin, currentY);
             currentY += 10;
 
             const structuredData = [
                 { label: "NOME COMPLETO", val: dossieAtivo.nome_completo },
                 { label: "ALCUNHAS E COGNOMES", val: dossieAtivo.alcunhas_pseudonimos },
-                { label: "DADOS BIOGRAFICOS", val: dossieAtivo.dados_biograficos_basicos },
-                { label: "RESUMO GERAL", val: dossieAtivo.resumo_caso },
-                { label: "INFANCIA E AMBIENTE FAMILIAR", val: dossieAtivo.infancia_desenvolvimento },
-                { label: "ANTECEDENTES E PRIMEIRAS ANOMALIAS", val: dossieAtivo.antecedentes_primeiros_delitos },
-                { label: "CRONOLOGIA CRIMINAL DETALHADA", val: dossieAtivo.cronologia_crimes_principais },
-                { label: "METODOLOGIA E MODUS OPERANDI", val: dossieAtivo.modus_operandi_tecnico },
-                { label: "PERFIL PSICOLOGICO E PSIQUIATRICO", val: dossieAtivo.perfil_psicologico_diagnostico },
+                { label: "REGISTROS BIOGRAFICOS", val: dossieAtivo.dados_biograficos_basicos },
+                { label: "SUMARIO DO CASO", val: dossieAtivo.resumo_caso },
+                { label: "HISTORICO DA INFANCIA", val: dossieAtivo.infancia_desenvolvimento },
+                { label: "DELITOS PREVIOS E ANTECEDENTES", val: dossieAtivo.antecedentes_primeiros_delitos },
+                { label: "CRIMES PRINCIPAIS CONSTATADOS", val: dossieAtivo.cronologia_crimes_principais },
+                { label: "MODUS OPERANDI DETALHADO", val: dossieAtivo.modus_operandi_tecnico },
+                { label: "LAUDO COMPORTAMENTAL PSICOLOGICO", val: dossieAtivo.perfil_psicologico_diagnostico },
                 { label: "INVESTIGACAO E OPERACAO DE CAPTURA", val: dossieAtivo.investigacao_captura },
-                { label: "JULGAMENTO, DEFESA E SENTENCA", val: dossieAtivo.processo_julgamento_sentenca },
-                { label: "COMPORTAMENTO CARCERARIO", val: dossieAtivo.vida_carceraria_comportamento },
-                { label: "REGIME ATUAL DE CUMPRIMENTO", val: dossieAtivo.regime_atual },
-                { label: "TOTAL DA PENA", val: dossieAtivo.anos_condenacao },
-                { label: "SITUACAO ATUAL HOJE", val: dossieAtivo.situacao_atual_hoje },
-                { label: "REPERCUSSAO SOCIAL E MUDANCAS LEGAIS", val: dossieAtivo.impacto_social_legado }
+                { label: "JULGAMENTO E CONDENACAO LEGAL", val: dossieAtivo.processo_julgamento_sentenca },
+                { label: "COMPORTAMENTO EM CUSTODIA", val: dossieAtivo.vida_carceraria_comportamento },
+                { label: "REGIME CARCERARIO", val: dossieAtivo.regime_penal_atual },
+                { label: "ANOS DE CONDENACAO", val: dossieAtivo.anos_condenacao },
+                { label: "SITUACAO ATUAL DE HOJE", val: dossieAtivo.situacao_atual_hoje },
+                { label: "REPERCUSSAO SOCIAL E LEGISLATIVA", val: dossieAtivo.impacto_social_legado }
             ];
 
             doc.setFont("courier", "normal");
             doc.setFontSize(9.5);
 
             structuredData.forEach(section => {
-                if (!section.val) return;
+                const textValue = (section.val === undefined || section.val === null || String(section.val).trim() === "") 
+                    ? "[REGISTRO NAO CONSTATADO]" 
+                    : section.val;
 
-                // Margens e controle de altura
                 if (currentY > pageHeight - 25) {
                     doc.addPage();
                     currentY = 20;
                 }
 
                 doc.setFont("courier", "bold");
+                doc.setTextColor(109, 10, 29);
                 doc.text(`[${section.label}]`, margin, currentY);
                 currentY += 5;
 
                 doc.setFont("courier", "normal");
-                const splitText = doc.splitTextToSize(section.val, maxLineWidth);
+                doc.setTextColor(0, 0, 0);
+                const splitText = doc.splitTextToSize(textValue, maxLineWidth);
                 
                 splitText.forEach(line => {
                     if (currentY > pageHeight - 20) {
@@ -836,10 +1162,10 @@
                     currentY += 5.5;
                 });
 
-                currentY += 6; // Espaço para a próxima seção
+                currentY += 6;
             });
 
-            const fileName = `dossie_completo_${dossieAtivo.nome_completo.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
+            const fileName = `nexus_investigacao_${dossieAtivo.nome_completo.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
             doc.save(fileName);
         });
     </script>

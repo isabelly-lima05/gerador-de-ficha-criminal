@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISTEMA NEXUS // Divisão de Análise de Riscos e Segurança Nacional</title>
     
+    <link rel="icon" href="Icones-Casos-Criminais.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=JetBrains+Mono:wght@200;300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,31 +14,7 @@
 
     <style>
         :root {
-            /* Tema Escuro - Nocturne Crimson (Premium) */
-            --bg-deep: #060709;
-            --bg-card: rgba(12, 14, 18, 0.98);
-            --accent-red: #9e0a2b;
-            --accent-red-bright: #e6194b;
-            --accent-red-rgb: 158, 10, 43;
-            --accent-glow: rgba(158, 10, 43, 0.05);
-            --text-main: #f1f5f9;
-            --text-muted: #64748b;
-            --border-subtle: rgba(158, 10, 43, 0.18);
-            --border-focus: rgba(230, 25, 75, 0.4);
-            --input-bg: #090b0e;
-            --viewport-bg: #07080a;
-            --title-color: #f8fafc;
-            --paragraph-color: #cbd5e1;
-            --shadow-intensity: rgba(0, 0, 0, 0.95);
-            --tab-active: rgba(158, 10, 43, 0.06);
-            --pill-bg: rgba(158, 10, 43, 0.02);
-            --pill-border: rgba(158, 10, 43, 0.12);
-            
-            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        body.light-theme {
-            /* Tema Claro - Alabastro / Arquivo de Investigação Preservado */
+            /* Tema Claro Padrão - Alabastro / Arquivo de Investigação Preservado */
             --bg-deep: #e2ded5;
             --bg-card: #fbf9f5;
             --accent-red: #6d0a1d;
@@ -56,6 +33,8 @@
             --tab-active: rgba(109, 10, 29, 0.05);
             --pill-bg: rgba(109, 10, 29, 0.03);
             --pill-border: rgba(109, 10, 29, 0.15);
+            
+            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -78,28 +57,24 @@
             position: relative;
         }
 
-        /* Vinheta refinada nas extremidades */
+        /* Vinheta nas extremidades */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.95) 100%);
+            background: radial-gradient(circle, transparent 65%, rgba(109, 10, 29, 0.1) 100%);
             z-index: 10;
             pointer-events: none;
         }
 
-        body.light-theme::before {
-            background: radial-gradient(circle, transparent 65%, rgba(109, 10, 29, 0.1) 100%);
-        }
-
-        /* Grelha tática sutil */
+        /* Grelha tática */
         body::after {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
-                linear-gradient(rgba(158, 10, 43, 0.012) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(158, 10, 43, 0.012) 1px, transparent 1px);
+                linear-gradient(rgba(109, 10, 29, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(109, 10, 29, 0.02) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: 11;
             pointer-events: none;
@@ -129,15 +104,16 @@
         @media (max-width: 1024px) {
             .app-container {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
+                grid-template-rows: auto;
                 height: auto;
                 max-height: none;
-                padding: 24px;
+                padding: 20px;
                 gap: 24px;
                 overflow: visible;
             }
             body {
                 overflow: auto;
+                padding: 12px;
             }
         }
 
@@ -151,6 +127,23 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-stamp {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+            transform: rotate(-10deg);
+            opacity: 0.85;
+            user-select: none;
+            pointer-events: none;
+            filter: contrast(1.1) saturate(0.9);
         }
 
         .header-brand h1 {
@@ -183,26 +176,7 @@
             display: flex;
             align-items: center;
             gap: 18px;
-        }
-
-        .theme-toggle {
-            background-color: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 2px;
-            cursor: pointer;
-            font-size: 0.65rem;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: var(--transition-smooth);
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--accent-red);
-            background: var(--tab-active);
-            color: var(--accent-red-bright);
+            flex-wrap: wrap;
         }
 
         .status-badge {
@@ -243,7 +217,7 @@
             grid-row: 2;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
             overflow-y: auto;
             padding-right: 6px;
         }
@@ -296,7 +270,72 @@
             box-shadow: 0 0 12px var(--accent-glow);
         }
 
-        /* ATALHOS RÁPIDOS */
+        /* AÇÕES */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-red);
+            color: #ffffff;
+            border: none;
+            border-radius: 2px;
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-smooth);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background-color: var(--accent-red-bright);
+            box-shadow: 0 0 15px rgba(var(--accent-red-rgb), 0.3);
+        }
+
+        .btn-submit:disabled {
+            background-color: var(--pill-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-clear:hover {
+            border-color: var(--accent-red);
+            color: var(--text-main);
+            background-color: var(--tab-active);
+        }
+
+        /* LISTAS E CHIPS DE CONSULTA */
         .quick-consultation {
             display: flex;
             flex-direction: column;
@@ -331,37 +370,65 @@
             color: var(--text-main);
         }
 
-        .btn-submit {
-            background-color: var(--accent-red);
-            color: #ffffff;
-            border: none;
-            border-radius: 2px;
-            padding: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: var(--transition-smooth);
+        /* HISTÓRICO LOCAL */
+        .history-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 14px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-        }
-
-        .btn-submit:hover:not(:disabled) {
-            background-color: var(--accent-red-bright);
-            box-shadow: 0 0 15px rgba(var(--accent-red-rgb), 0.3);
-        }
-
-        .btn-submit:disabled {
             background-color: var(--pill-bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border-subtle);
-            cursor: not-allowed;
-            box-shadow: none;
+            border: 1px solid var(--pill-border);
+            border-radius: 2px;
+            padding: 6px 10px;
+            font-size: 0.68rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: var(--transition-smooth);
+        }
+
+        .history-item:hover {
+            border-color: var(--accent-red);
+        }
+
+        .history-name {
+            cursor: pointer;
+            color: var(--text-main);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .history-delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-red);
+            cursor: pointer;
+            font-weight: 700;
+            padding-left: 8px;
+            font-size: 0.8rem;
+            line-height: 1;
+            transition: var(--transition-smooth);
+        }
+
+        .history-delete-btn:hover {
+            color: var(--accent-red-bright);
+            transform: scale(1.15);
         }
 
         /* ABAS FORMATO DOSSIÊ */
@@ -422,7 +489,15 @@
             position: relative;
         }
 
-        /* Cantoneiras de mira tática (HUD Elegante) */
+        @media (max-width: 1024px) {
+            .reading-panel {
+                grid-column: 1;
+                grid-row: auto;
+                min-height: 500px;
+            }
+        }
+
+        /* Cantoneiras HUD */
         .reading-panel::before, .reading-panel::after {
             content: '';
             position: absolute;
@@ -432,12 +507,10 @@
             pointer-events: none;
             z-index: 5;
         }
-        /* Topo Esquerdo */
         .reading-panel::before {
             top: 12px; left: 12px;
             border-right: none; border-bottom: none;
         }
-        /* Base Direita */
         .reading-panel::after {
             bottom: 12px; right: 12px;
             border-left: none; border-top: none;
@@ -453,9 +526,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
-            background-color: rgba(0, 0, 0, 0.15);
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         .btn-text-action {
@@ -488,12 +563,18 @@
             flex-direction: column;
             gap: 28px;
             background-image: 
-                radial-gradient(rgba(158, 10, 43, 0.04) 1px, transparent 1px);
+                radial-gradient(rgba(109, 10, 29, 0.04) 1px, transparent 1px);
             background-size: 24px 24px;
             position: relative;
         }
 
-        /* Marca d'água em background */
+        @media (max-width: 768px) {
+            .viewport-content {
+                padding: 20px;
+                gap: 20px;
+            }
+        }
+
         .viewport-watermark {
             position: absolute;
             bottom: 20px;
@@ -589,6 +670,7 @@
             color: var(--title-color);
             font-weight: 700;
             letter-spacing: 1px;
+            word-wrap: break-word;
         }
 
         .header-dossier-meta {
@@ -600,23 +682,19 @@
             text-transform: uppercase;
         }
 
-        /* METRICAS / FORMULÁRIO */
+        /* MÉTRICAS */
         .grid-metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 18px;
         }
 
         .metric-card {
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(109, 10, 29, 0.02);
             border: 1px solid var(--border-subtle);
             border-top: 2px solid var(--accent-red);
             border-radius: 2px;
             padding: 16px;
-        }
-
-        body.light-theme .metric-card {
-            background-color: rgba(109, 10, 29, 0.02);
         }
 
         .metric-label {
@@ -645,7 +723,7 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* TEXT BLOCKS */
+        /* ELEMENTOS DE TEXTO */
         .block-text {
             display: flex;
             flex-direction: column;
@@ -670,17 +748,28 @@
             text-align: justify;
         }
 
-        /* ELEMENTO PARA DADOS AUSENTES */
         .data-unavailable {
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             font-weight: 500;
-            background: rgba(158, 10, 43, 0.03);
+            background: rgba(109, 10, 29, 0.03);
             padding: 4px 8px;
             border-radius: 2px;
             border: 1px dashed var(--border-subtle);
             display: inline-block;
+        }
+
+        @media (max-width: 480px) {
+            .header-brand {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .header-stamp {
+                width: 44px;
+                height: 44px;
+            }
         }
 
         @keyframes fadeIn {
@@ -688,7 +777,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* LOADING ELEGANTE */
+        /* ANIMAÇÃO DE CARREGAMENTO */
         .scanning-loader {
             display: flex;
             flex-direction: column;
@@ -701,6 +790,7 @@
             font-size: 0.7rem;
             letter-spacing: 2px;
             font-weight: 500;
+            text-align: center;
         }
 
         .radar-spinner {
@@ -725,10 +815,10 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ERRO */
+        /* CARDS DE ERRO */
         .error-card {
             border: 1px solid var(--accent-red);
-            background: rgba(158, 10, 43, 0.02);
+            background: rgba(109, 10, 29, 0.02);
             padding: 28px;
             border-radius: 2px;
             max-width: 440px;
@@ -753,7 +843,8 @@
         }
 
         ::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
@@ -771,12 +862,14 @@
     <div class="app-container">
         <header>
             <div class="header-brand">
-                <h1>NEXUS // <span>ARCHIVES</span></h1>
-                <span class="subtitle">Análise Geopolítica de Riscos e Históricos Prisionais</span>
+                <img src="Icones-Casos-Criminais.png" class="header-stamp" alt="Selo Criminal">
+                <div>
+                    <h1>NEXUS // <span>ARCHIVES</span></h1>
+                    <span class="subtitle">Análise Geopolítica de Riscos e Históricos Prisionais</span>
+                </div>
             </div>
             
             <div class="header-controls">
-                <button class="theme-toggle" id="themeToggle">Dossiê Físico</button>
                 <div class="status-badge">
                     <span class="status-dot active" id="statusDot"></span>
                     <span id="statusText">LINK OFICIAL</span>
@@ -790,9 +883,22 @@
                 <input type="text" id="nome_pesquisa" placeholder="Nome ou alcunha de registro..." autocomplete="off">
             </div>
 
-            <!-- Painel de Dossiês Frequentes -->
+            <!-- Painel de Ações -->
+            <div class="action-buttons">
+                <button class="btn-submit" id="btnConsultar">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    Executar Varredura
+                </button>
+                <button class="btn-clear" id="btnLimpar" title="Limpar requisição atual e retornar ao início">
+                    Limpar Registro
+                </button>
+            </div>
+
+            <!-- Casos Armazenados Fictícios -->
             <div class="quick-consultation">
-                <label>Casos Armazenados</label>
+                <label>Casos Pré-carregados</label>
                 <div class="pills-container">
                     <span class="pill-item" onclick="ativarAtalho('Ted Bundy')" title="Ted Bundy">Ted Bundy</span>
                     <span class="pill-item" onclick="ativarAtalho('Al Capone')" title="Al Capone">Al Capone</span>
@@ -801,12 +907,11 @@
                 </div>
             </div>
 
-            <button class="btn-submit" id="btnConsultar">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                </svg>
-                Executar Varredura
-            </button>
+            <!-- Histórico de Buscas Salvas -->
+            <div class="history-container" id="historyContainer" style="display: none;">
+                <label>Histórico de Consultas</label>
+                <div class="history-list" id="historyList"></div>
+            </div>
 
             <!-- Menu de Navegação do Dossiê -->
             <div class="dossier-index" id="dossierIndex" style="display: none;">
@@ -849,26 +954,189 @@
         const API_URL = "https://gerador-de-conto-de-terror-ai.vercel.app/generate";
         let dossieAtivo = null;
 
-        // Alternador de Temas
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            themeToggle.innerText = isLight ? "Terminal Digital" : "Dossiê Físico";
-        });
+        // BANCO DE DADOS LOCAL (Offline Fallback para os 4 casos frequentes)
+        const LOCAL_DOSSIERS = {
+            "ted bundy": {
+                pesquisa_valida: true,
+                nome_completo: "Theodore Robert Bundy",
+                alcunhas_pseudonimos: "Ted Bundy / 'The Lady Killer' / 'The Charismatic Killer'",
+                dados_biograficos_basicos: "Nascimento: 24/11/1946 (Burlington, Vermont, EUA) // Óbito: 24/01/1989 (Prisão Estadual da Flórida, Raiford, EUA). Bacharel em Psicologia pela Universidade de Washington.",
+                resumo_caso: "Considerado um dos predadores sexuais mais prolíficos da era moderna, Theodore Robert Bundy sequestrou, estuprou, torturou e assassinou mais de 30 mulheres jovens em pelo menos sete estados norte-americanos (Washington, Oregon, Utah, Colorado, Idaho, Califórnia e Flórida) durante o período de 1974 a 1978. Embora o número oficial de vítimas confirmadas seja de 30, analistas comportamentais e investigadores estimam que o total real de homicídios cometidos por Bundy ultrapasse a marca de 100 indivíduos. Sua principal arma criminológica consistia em sua inteligência acadêmica, excelente oratória e charme aristocrático, que serviam de disfarce para sua psicopatia estrutural sádica.",
+                infancia_desenvolvimento: "Filho de Eleanor Louise Cowell, nasceu em Burlington em um abrigo para mães solteiras. Devido ao severo estigma social da época, Bundy foi criado pelos avós maternos (Samuel e Eleanor Cowell) sob a falsa narrativa de que eles eram seus pais biológicos e que sua verdadeira mãe era sua irmã mais velha. Descobriu a verdade sobre sua legitimidade filial na adolescência, evento que desencadeou profunda revolta íntima e distanciamento afetivo. Seu avô Samuel era um homem abusivo e instável. Na infância, Theodore já demonstrava traços nítidos de isolamento patológico, fixação obsessiva por facas e leitura assídua de revistas pornográficas de teor violento/sadomasoquista.",
+                antecedentes_primeiros_delitos: "Durante a adolescência em Tacoma, Washington, Bundy esteve envolvido em dezenas de pequenos delitos não fichados, incluindo roubos sistemáticos em lojas e invasões de domicílios vizinhos para a prática ativa de voyeurismo noturno. Na faculdade de psicologia da Universidade de Washington, sua conduta social era superficialmente exemplar, embora ocultasse uma profunda incapacidade de integração íntima. Um marco psicopatológico crucial ocorreu quando foi rejeitado por sua namorada Diane Edwards, jovem de família rica que personificava o padrão estético e de classe que Bundy obsessivamente cobiçava. Essa rejeição é apontada por perfiladores como o principal elemento ativador de sua fúria narcísica reprimida, definindo o biotipo físico de quase todas as suas futuras vítimas.",
+                cronologia_crimes_principais: "A escalada letal ativa iniciou-se em janeiro de 1974 com a invasão brutal do quarto de Karen Sparks, seguida pelo desaparecimento de Lynda Ann Healy em fevereiro. Durante os meses seguintes de 1974, jovens universitárias desapareceram em Washington e Oregon em intervalos de quase 30 dias. Em setembro do mesmo ano, transferiu-se para a Faculdade de Direito de Utah, iniciando novos ciclos de homicídios na região de Salt Lake City. Em 1975, expandiu sua atuação para o Colorado. Após suas famosas fugas do cárcere em 1977, viajou clandestinamente até a Flórida, onde em janeiro de 1978 cometeu o ataque brutal contra a irmandade estudantil Chi Omega (assassinando Lisa Levy e Margaret Bowman) e culminando no sequestro e morte de Kimberly Leach, de apenas 12 anos de idade, em fevereiro daquele ano.",
+                modus_operandi_tecnico: "Bundy operava com um padrão metodológico altamente calculado e adaptável. Em locais públicos e movimentados, simulava lesões físicas artificiais (braço engessado, tipóia ou pernas com muletas) ou se passava por um falso inspetor de polícia para solicitar assistência técnica de suas vítimas para carregar livros ou barcos até seu veículo, um Volkswagen Fusca de cor creme (do qual havia removido o assento do passageiro para facilitar o ocultamento de corpos inconscientes). Após nocautear a vítima com pancadas na cabeça usando barras de ferro, transportava-as para locais isolados onde as submetia a estupros, necrofilia e desmembramentos sistemáticos. Demonstrava um fetiche necrofílico bizarro, retornando frequentemente às cenas onde descartava os cadáveres para pentear os cabelos e maquiar os corpos em decomposição.",
+                perfil_psicologico_diagnostico: "Diagnosticado por múltiplos laudos oficiais como detentor de Transtorno de Personalidade Antissocial severo (Psicopatia clássica/fator 1 de Hare). Apresentava 'máscara de sanidade' impecável, descrita por Robert Hare como a capacidade de simular empatia, charme cognitivo, inteligência social refinada e falsa modéstia. Era impulsionado por um sadismo sexual instrumental, onde a obtenção de prazer estava intrinsicamente ligada ao controle absoluto sobre a vida e a morte da vítima, usando a dissociação episódica para manter uma carreira jurídica ativa enquanto realizava massacres noturnos.",
+                investigacao_captura: "A caçada policial a Bundy foi marcada pela severa ausência de cooperação interagências e a 'cegueira de conexão' (linkage blindness) das polícias estaduais na década de 1970. Sua primeira prisão significativa ocorreu por acaso em Utah, em agosto de 1975, após uma blitz de trânsito onde o policial Bob Hayward encontrou ferramentas de arrombamento, algemas e sacos de lixo em seu carro. Reconhecido por uma vítima sobrevivente (Carol DaRonch), foi indiciado. Em 1977, foi extraditado para o Colorado para julgamento de homicídio, onde realizou duas fugas cinematográficas das instalações prisionais antes de ser definitivamente preso em Pensacola, Flórida, em fevereiro de 1978, conduzindo um carro roubado.",
+                processo_julgamento_sentenca: "Seus julgamentos na Flórida (1979 e 1980) foram os primeiros a receber ampla cobertura televisiva de alcance nacional nos EUA. Demonstrando arrogância intelectual, Bundy dispensou advogados e assumiu sua própria defesa técnica no tribunal, transformando o rito processual em um espetáculo midiático. No meio do julgamento, utilizou-se de uma lei estadual obscura para casar-se oficialmente perante o júri com sua namorada Carole Ann Boone enquanto ela prestava depoimento no púlpito. O júri o condenou à pena capital em múltiplos processos. Bundy manteve uma postura de negação obstinada até as vésperas de sua execução, quando confessou detalhadamente dezenas de crimes aos investigadores na tentativa frustrada de barganhar o adiamento da sentença.",
+                regime_penal_atual: "Custódia Finalizada // Sentença Executada por Cadeira Elétrica",
+                anos_condenacao: "Pena de Morte por Eletrocussão (Executada em 24 de janeiro de 1989)",
+                vida_carceraria_comportamento: "Durante sua estada de 9 anos no corredor da morte da Prisão de Raiford, Bundy oscilou entre períodos de extremo isolamento depressivo e fases de intensa colaboração com as autoridades de segurança nacional. Cooperou ativamente com o perfilador Robert Keppel, oferecendo análises comportamentais valiosas sobre a mente de outros assassinos em série ativos na época, incluindo Gary Ridgway (The Green River Killer). Na noite anterior à execução, concedeu uma polêmica entrevista ao psicólogo James Dobson, culpando o consumo de pornografia violenta como o estopim de suas distorções mentais.",
+                situacao_atual_hoje: "Falecido. Executado na cadeira elétrica 'Old Sparky' às 07:16 da manhã do dia 24 de janeiro de 1989. Seu corpo foi cremado e as cinzas espalhadas na cordilheira Cascade State, mesmo local onde descartou os corpos de várias de suas vítimas.",
+                impacto_social_legado: "O caso de Ted Bundy transformou radicalmente o cenário da criminologia forense e do direito penal nos EUA. A constatação de sua mobilidade interestadual forçou o FBI a unificar os dados policiais do país e a expandir a Unidade de Ciência Comportamental (Behavioral Science Unit), estruturando o Programa de Apreensão de Criminosos Violentos (ViCAP). Cimentou internacionalmente os estudos modernos sobre perfis criminais de serial killers."
+            },
+            "al capone": {
+                pesquisa_valida: true,
+                nome_completo: "Alphonse Gabriel Capone",
+                alcunhas_pseudonimos: "Al Capone / 'Scarface' / 'The Big Fellow'",
+                dados_biograficos_basicos: "Nascimento: 17/01/1899 (Brooklyn, Nova York, EUA) // Óbito: 25/01/1947 (Palm Island, Flórida, EUA). Líder supremo do império do crime organizado de Chicago.",
+                resumo_caso: "Alphonse Gabriel Capone ergueu e liderou a maior e mais violenta corporação criminosa de Chicago nas décadas de 1920 e 1930, conhecida como 'The Chicago Outfit'. Explorando com genialidade tática e extrema violência as restrições impostas pela Lei Seca (18ª Emenda à Constituição dos EUA), Capone unificou o submundo do contrabando de bebidas alcoólicas, jogos de azar ilegais, extorsão sindical e redes de prostituição de luxo, gerando um faturamento anual estimado em mais de 100 milhões de dólares na época. Seu império de terror foi pavimentado pelo suborno sistemático de dezenas de agentes públicos, chefes de polícia e magistrados locais, estabelecendo uma autêntica plutocracia do crime organizado.",
+                infancia_desenvolvimento: "Filho de Gabriele Capone, um barbeiro profissional, e Teresina Capone, costureira, ambos imigrantes italianos originários de Castellammare di Stabia, Itália. Al cresceu em uma residência humilde no Brooklyn, cercado por uma família numerosa de nove irmãos. Apresentava comportamento desafiador na juventude; aos 14 anos, após sofrer agressão verbal e física de uma professora em sala de aula, Capone reagiu desferindo golpes contra a educadora, o que resultou em sua expulsão definitiva do sistema de ensino formal. Livre de vínculos institucionais, passou a transitar livremente pelas docas e integrar gangues de rua influentes, incluindo a 'South Brooklyn Rippers' e a lendária 'Five Points Gang' comandada por Johnny Torrio.",
+                antecedentes_primeiros_delitos: "Em Nova York, Capone atuou inicialmente como bouncer (segurança) e cobrador de aluguel no bar 'Harvard Inn', de propriedade do gângster Frankie Yale. Foi nesse estabelecimento que ocorreu o evento que definiu sua imagem pública: ao proferir um comentário obsceno direcionado à irmã do mafioso local Frank Galluccio, Capone foi atacado com golpes de navalha no rosto, resultando em três cicatrizes profundas na bochecha e mandíbula esquerda. Embora Capone tentasse ocultar as marcas nas fotos alegando que eram feridas de combate adquiridas na Primeira Guerra Mundial, a alcunha de 'Scarface' o acompanhou de forma permanente. Em 1919, para escapar de investigações de homicídio em Nova York, mudou-se para Chicago a convite de seu mentor Johnny Torrio.",
+                cronologia_crimes_principais: "Após a tentativa de homicídio que quase vitimou Johnny Torrio em 1925 por atiradores rivais, Torrio retirou-se dos negócios e transferiu o controle absoluto do Outfit para Capone. Al assumiu a chefia aos 26 anos e iniciou uma violenta campanha de expansão contra as gangues irlandesas do norte (lideradas por Dean O'Banion e Hymie Weiss). O ápice de sua guerra de extermínio ocorreu em 14 de fevereiro de 1929, no icônico 'Massacre de São Valentim', onde capangas de Capone disfarçados de oficiais de polícia fuzilaram sete membros da facção rival de Bugs Moran contra a parede de uma garagem de Chicago.",
+                modus_operandi_tecnico: "Capone operava o crime organizado com as mesmas premissas de uma grande corporação multinacional. Ele verticalizou a indústria do álcool clandestino, controlando desde as destilarias ilegais internas e frotas de importação de navios do Canadá até as redes de distribuição final nos milhares de bares clandestinos (speakeasies) de Chicago. Sua tática de controle apoiava-se no uso intensivo da metralhadora Thompson (conhecida como 'Tommie Gun') disparada de veículos em movimento. Capone também refinou os processos de extorsão e proteção forçada ('racketeering') de pequenos e grandes estabelecimentos, além de manter um controle rígido sobre os sindicatos industriais locais.",
+                perfil_psicologico_diagnostico: "Personalidade de traços sociopáticos acentuados com traços de transtorno narcisista megalomaníaco. Capone sofria de uma grave dissonância cognitiva social: ele rejeitava terminantemente a rotulagem de criminoso ou assassino, retratando-se publicamente como um provedor de entretenimento legítimo e benfeitor social que apenas supria a demanda de mercado por bebidas que o governo tentava proibir.",
+                investigacao_captura: "O governo federal utilizou uma estratégia de investigação em duas frentes independentes para capturar o mafioso. A primeira frente, de caráter ostensivo e liderada pelo agente especial Eliot Ness e sua equipe apelidada de 'Os Intocáveis' (assim chamados devido à recusa obstinada de subornos), focou em destruir fisicamente as destilarias e depósitos de Capone. No entanto, a investigação decisiva e silenciosa foi conduzida pelo agente Frank J. Wilson, da Divisão de Inteligência da Receita Federal (IRS), que passou anos analisando livros contábeis confiscados em batidas policiais para comprovar que Capone acumulava rendimentos milionários sem jamais ter declarado ou pago imposto de renda.",
+                processo_julgamento_sentenca: "O julgamento de Capone em outubro de 1931 foi o evento judicial do ano. Os advogados do mafioso tentaram comprar e intimidar todo o corpo de jurados previamente selecionado. No entanto, o juiz James H. Wilkerson, ao tomar conhecimento da conspiração de suborno, ordenou a troca completa de todo o júri por um novo painel de cidadãos de outra comarca minutos antes do início do julgamento. Capone foi considerado culpado em 5 das 23 acusações de sonegação fiscal e condenado a uma pena severa e sem precedentes de 11 anos em regime de segurança máxima federal.",
+                regime_penal_atual: "Custódia Finalizada // Falecido",
+                anos_condenacao: "11 Anos de Reclusão e pagamento de pesadas multas fiscais cumulativas.",
+                vida_carceraria_comportamento: "Iniciou sua sentença na Prisão de Atlanta, onde usou de sua fortuna oculta para subornar guardas e obter regalias de luxo em sua cela. Para cortar definitivamente sua rede de influência corporativa, o governo transferiu Capone em 1934 para a recém-inaugurada Penitenciária Federal de Alcatraz, na Baía de São Francisco. Sob isolamento total e regras severas, Capone perdeu o controle do Outfit. Sua integridade cognitiva e física entrou em declínio acelerado devido ao avanço da neurossífilis, doença que havia contraído na juventude e negligenciado tratamento.",
+                situacao_atual_hoje: "Falecido. Liberado sob condicional médica em 1939 devido ao avançado estado de invalidez física e demência progressiva. Passou seus últimos anos recluso e alienado em sua mansão de Palm Island na Flórida. Faleceu em 25 de janeiro de 1947 devido a um colapso cardíaco e pneumonia.",
+                impacto_social_legado: "A condenação de Al Capone institucionalizou a sonegação fiscal e o rastreamento financeiro (lavagem de dinheiro) como os métodos mais eficientes para desmantelar organizações criminosas internacionais. Inspirou a formulação de leis contra organizações corruptas (como a futura Lei RICO dos EUA) e mudou permanentemente o foco das investigações de segurança nacional para a repressão financeira."
+            },
+            "suzane von richthofen": {
+                pesquisa_valida: true,
+                nome_completo: "Suzane Louise von Richthofen",
+                alcunhas_pseudonimos: "Suzane Richthofen / 'A Garota de Tremembé'",
+                dados_biograficos_basicos: "Nascimento: 03/11/1983 (São Paulo, SP, Brasil). Atualmente em regime aberto de liberdade condicional. Fluente em três idiomas, descendente direta de aristocratas germânicos.",
+                resumo_caso: "Suzane Louise von Richthofen planejou de forma meticulosa e premeditada, ao longo de semanas, o homicídio qualificado de seus pais, o engenheiro Manfred Albert von Richthofen (diretor de engenharia da empresa estatal Dersa) e a médica psiquiatra Marísia von Richthofen. O crime foi cometido em 31 de outubro de 2002 na residência da família por seu namorado da época, Daniel Cravinhos de Paula e Silva, e pelo irmão deste, Cristian Cravinhos. O crime chocou a opinião pública nacional pela extrema frieza e futilidade da motivação: Suzane desejava obter acesso imediato ao vultoso patrimônio imobiliário e financeiro da família Richthofen e afastar de forma definitiva a interferência dos pais em sua vida amorosa e financeira privada.",
+                infancia_desenvolvimento: "Nascida em berço aristocrático de classe média alta em São Paulo, Suzane foi criada em um ambiente familiar de privilégios econômicos elevados e educação de alto padrão. Estudou no renomado Colégio Visconde de Porto Seguro, de linha pedagógica alemã, e ingressou na Faculdade de Direito da Pontifícia Universidade Católica de São Paulo (PUC-SP). Seu pai, Manfred, era descendente direto do Barão de Richthofen, célebre piloto de caça da Primeira Guerra Mundial. Apesar da fachada de harmonia social e financeira da mansão da família, Suzane desenvolveu ressentimento silencioso contra os pais, descrevendo-os posteriormente como controladores, autoritários e excessivamente rígidos quanto aos seus limites pessoais e escolhas de relacionamento amoroso.",
+                antecedentes_primeiros_delitos: "Não contava com qualquer histórico de infrações criminais, atos de delinquência ou conduta antissocial registrada perante a polícia civil antes dos atos que culminaram no parricídio de outubro de 2002. A sua ficha de antecedentes era inteiramente livre de anotações desabonadoras.",
+                cronologia_crimes_principais: "O planejamento iniciou-se quando seus pais descobriram seu relacionamento com o aeromodelista Daniel Cravinhos, rapaz de classe social inferior, opondo-se severamente ao namoro. Manfred e Marísia passaram a restringir as finanças de Suzane. Juntamente com Daniel e o cunhado Cristian Cravinhos, Suzane planejou o crime por quase um mês. Na noite de 31 de outubro de 2002, após certificar-se de que os pais estavam dormindo no andar de cima, ela abriu o portão da garagem e permitiu a entrada de Daniel e Cristian na residência. Aguardou no andar térreo enquanto os executores golpeavam Manfred e Marísia até a morte no dormitório do casal.",
+                modus_operandi_tecnico: "O *modus operandi* destacou-se pela cuidadosa divisão de tarefas e execução do plano tático. Suzane agiu como a mente facilitadora interna: desligou o sistema complexo de alarmes periféricos da mansão, controlou a movimentação do irmão mais novo (Andreas von Richthofen), deixando-o previamente em uma lan house de jogos, e indicou aos executores a localização exata das barras de ferro de fabricação caseira que seriam usadas para o esmagamento craniano das vítimas. Após o crime, os réus simularam a ocorrência de um assalto violento seguido de morte (latrocínio), espalhando joias, documentos e roubando dólares em espécie para desviar as investigações. Depois da fuga, hospedaram-se em um motel de luxo para criar um falso álibi de tempo.",
+                perfil_psicologico_diagnostico: "Laudos psiquiátricos e testes de Rorschach realizados a pedido do Poder Judiciário caracterizaram Suzane com traços marcantes de Transtorno de Personalidade Antissocial (Psicopatia moderada), egocentrismo excessivo, frieza afetiva instrumental e alta capacidade de manipulação discursiva. Demonstrou ao longo de anos um severo achatamento afetivo, com total ausência de reações corporais genuínas de luto, culpa, angústia ou remorso pelo extermínio físico de seus pais biológicos.",
+                investigacao_captura: "Conduzida de forma enérgica pela Polícia Civil do Estado de São Paulo através do DHPP (Departamento de Homicídios). Os detetives suspeitaram da versão de assalto face à ausência de arrombamentos externos e o desligamento pontual dos alarmes internos. O ponto de virada da investigação ocorreu quando os policiais rastrearam a compra à vista de uma motocicleta Suzuki importada realizada por Cristian Cravinhos poucas horas após o sepultamento do casal, paga integralmente com notas de dólares em espécie de numeração sequencial. Pressionado, Cristian confessou o crime, arrastando Daniel e Suzane para a prisão preventiva em 8 de novembro de 2002.",
+                processo_julgamento_sentenca: "O júri popular, realizado em julho de 2006, parou o Brasil e obteve cobertura jornalística massiva de rádio e TV. A defesa de Suzane tentou apresentá-la como uma jovem inocente, submissa e totalmente dominada pelo namorado Daniel. A tese da acusação, contudo, provou que ela agiu como coautora e mentora intelectual intelectualizada da ação. O júri a condenou por homicídio triplamente qualificado (motivo torpe, meio cruel e impossibilidade de defesa das vítimas) a uma sentença inicial de 39 anos de prisão em regime fechado.",
+                regime_penal_atual: "Regime Aberto (Liberdade Assistida)",
+                anos_condenacao: "39 Anos de Reclusão (Sentença reduzida de forma progressiva pela legislação de execução penal nacional).",
+                vida_carceraria_comportamento: "Seu comportamento na Penitenciária Feminina de Tremembé foi classificado como excelente e disciplinado ao longo de duas décadas. Atuou como líder de oficina de costura, exerceu trabalhos de secretaria interna e obteve excelente avaliação em testes criminológicos contínuos. Em 2015, progrediu para o regime semiaberto, obtendo o direito a saídas temporárias periódicas. No semiaberto, obteve autorização judicial para cursar o ensino superior em biomedicina.",
+                situacao_atual_hoje: "Atualmente cumpre o restante de sua pena de reclusão em liberdade sob o Regime Aberto desde janeiro de 2023, sob monitoramento da vara de execuções penais, residindo de forma discreta no interior do estado de São Paulo.",
+                impacto_social_legado: "O parricídio Richthofen alterou profundamente os debates sobre a legislação de herança do Código Civil no Brasil, agilizando as regras de exclusão de herdeiros por indignidade. Tornou-se também um marco de estudos nas disciplinas de psicologia jurídica forense e psiquiatria clínica criminal, além de inspirar livros, teses acadêmicas e produções audiovisuais de alta repercussão."
+            },
+            "jack, o estripador": {
+                pesquisa_valida: true,
+                nome_completo: "Desconhecido (Codinome: Jack, o Estripador / 'Jack the Ripper')",
+                alcunhas_pseudonimos: "Jack, o Estripador / 'Whitechapel Murderer' / 'Leather Apron'",
+                dados_biograficos_basicos: "Ativo criminalmente de agosto a novembro de 1888. Local de operação: Distrito periférico de Whitechapel e Spitalfields, na zona leste de Londres, Reino Unido. Identidade real civil jamais estabelecida em cartório.",
+                resumo_caso: "Codinome mundialmente consagrado para designar um assassino em série não identificado que vitimou de forma extremamente violenta pelo menos cinco mulheres (prostitutas de rua) no miserável distrito de Whitechapel, Londres, no outono do ano de 1888. Conhecido pela extraordinária precisão anatômica de suas mutilações mutilatórias e pela remoção de órgãos internos específicos das vítimas, o criminoso desafiou com sucesso os maiores aparatos de segurança da era vitoriana e originou o nascimento do fascínio midiático moderno por assassinos em série insolúveis.",
+                infancia_desenvolvimento: "Devido ao completo anonimato do perpetrador real dos crimes, não constam registros biográficos oficiais, médicos ou históricos de sua infância, desenvolvimento infantil ou relações familiares primárias. A criminologia moderna trabalha puramente sob a hipótese de uma criação severamente abusiva em ambientes de intensa degradação socioeconômica, associada a episódios recorrentes de humilhação por figuras femininas e sérios distúrbios de conduta moral.",
+                antecedentes_primeiros_delitos: "Não há registros oficiais de crimes anteriores ao ciclo de homicídios de 1888 diretamente associados ao indivíduo. No entanto, com base no comportamento de escala criminosa conhecido atualmente, perfiladores afirmam que o Estripador certamente contava com uma folha de abusos e delitos ocultos, tais como violência de gênero não relatada, agressão armada, crueldade com animais e distúrbios sexuais públicos de voyeurismo e exibicionismo criminoso.",
+                cronologia_crimes_principais: "O período de atuação conhecido como 'O Outono do Terror de 1888' compreende a morte bárbara das 'Cinco Vítimas Canônicas': Mary Ann Nichols em 31 de agosto (encontrada em Buck's Row); Annie Chapman em 8 de setembro (em Hanbury Street); o evento duplo de 30 de setembro com a morte de Elizabeth Stride (em Berner Street) e Catherine Eddowes (em Mitre Square, jurisdição da City de Londres); e o derradeiro e mais violento ataque em 9 de novembro, vitimando Mary Jane Kelly em seu próprio quarto de aluguel em Miller's Court.",
+                modus_operandi_tecnico: "O *modus operandi* de Jack era cirúrgico, rápido e cruel. Ele abordava mulheres solas em ruas mal iluminadas, desarmando-as rapidamente com estrangulamento manual até a inconsciência completa para evitar ruídos de socorro. Em seguida, deitava-as no chão de paralelepípedos e realizava uma incisão profunda de degola na garganta, da esquerda para a direita, rompendo as artérias carótidas e traqueia de forma instantânea. Com a vítima morta ou moribunda, realizava extensas e precisas lacerações na parede abdominal com uma lâmina longa e rígida de uso profissional (faca de necropsia ou açougue). Ele removia órgãos internos como útero, rins e o coração, muitas vezes levando os órgãos consigo como troféus sádicos.",
+                perfil_psicologico_diagnostico: "Tratava-se de um sadista sexual psicótico de altíssimo nível de funcionamento cognitivo. Seu fetiche residia na completa destruição e desfiguração da feminilidade biológica e na posse visceral do interior do corpo humano. O legista oficial da polícia de Londres, Dr. Thomas Bond, redigiu o primeiro perfil criminal rudimentar da história em novembro de 1888, diagnosticando o autor como um indivíduo solitário, de aparência externa calma e respeitável, movido por impulsos insanos de vingança misógina extrema e desvio psicopatológico de natureza necrofílica.",
+                investigacao_captura: "A investigação policial reuniu a força-tarefa da Polícia Metropolitana de Londres (Scotland Yard) sob o comando do Inspetor Abberline e a Polícia da City de Londres. Utilizou técnicas primitivas de rastreamento urbano, coleta de depoimentos e o envio de cartas provocativas falsas de jornais (incluindo as famosas correspondências assinadas como 'Jack the Ripper' e a carta 'From Hell', enviada com meio rim humano conservado em vinho). A Scotland Yard investigou centenas de suspeitos, incluindo figuras célebres como o alfaiate polonês Aaron Kosminski, o advogado Montague Druitt, o médico Francis Tumblety e o pintor Walter Sickert, mas a completa ausência de tecnologia científica moderna inviabilizou a comprovação material da autoria.",
+                processo_julgamento_sentenca: "Não houve a instauração de qualquer processo judicial, denúncia formal ou julgamento do crime de parricídio, dada a incapacidade do Estado britânico de capturar ou sequer identificar as feições civis reais do assassino de Whitechapel.",
+                regime_penal_atual: "Caso Arquivado // Autoria Não Identificada",
+                anos_condenacao: "Inexistente.",
+                vida_carceraria_comportamento: "Inexistente. O criminoso nunca esteve sob custódia de sistemas penitenciários conhecidos.",
+                situacao_atual_hoje: "Arquivos encerrados formalmente devido ao decurso do tempo e à morte biológica presumida do perpetrador real no início do século XX. O caso permanece como o maior enigma criminológico não solucionado do mundo.",
+                impacto_social_legado: "O caso de Jack, o Estripador, é considerado o evento fundador do interesse acadêmico pela psicologia criminal forense e do nascimento do conceito moderno de 'serial killer'. Suas ramificações forçaram melhorias radicais no saneamento básico dos bairros periféricos de Londres, provocaram a modernização completa do policiamento investigativo da Scotland Yard e modificaram para sempre a forma como a imprensa escrita e televisiva internacional realiza a cobertura de crimes hediondos."
+            }
+        };
 
-        // Eventos
+        // Normalizador de entradas de busca para mapear o banco de dados local
+        function normalizarNome(nome) {
+            return nome.toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+                .replace(/[^a-z0-9 ]/g, "")      // Remove pontuações
+                .trim();
+        }
+
+        function buscarNoBancoLocal(nome) {
+            const termo = normalizarNome(nome);
+            if (termo.includes("bundy") || termo === "ted bundy") {
+                return LOCAL_DOSSIERS["ted bundy"];
+            }
+            if (termo.includes("capone") || termo === "al capone" || termo.includes("scarface")) {
+                return LOCAL_DOSSIERS["al capone"];
+            }
+            if (termo.includes("richthofen") || termo === "suzane von richthofen" || termo === "s richthofen" || termo === "suzane richthofen") {
+                return LOCAL_DOSSIERS["suzane von richthofen"];
+            }
+            if (termo.includes("estripador") || termo === "jack o estripador" || termo.includes("whitechapel")) {
+                return LOCAL_DOSSIERS["jack, o estripador"];
+            }
+            return null;
+        }
+
+        // Eventos principais
         const btnConsultar = document.getElementById('btnConsultar');
+        const btnLimpar = document.getElementById('btnLimpar');
         const inputPesquisa = document.getElementById('nome_pesquisa');
 
-        btnConsultar.addEventListener('click', consultarCaso);
+        btnConsultar.addEventListener('click', () => consultarCaso());
+        btnLimpar.addEventListener('click', limparDossie);
         inputPesquisa.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') consultarCaso();
         });
 
+        // Carregar histórico ao inicializar o aplicativo
+        document.addEventListener('DOMContentLoaded', carregarHistorico);
+
         function ativarAtalho(nome) {
             inputPesquisa.value = nome;
             consultarCaso();
+        }
+
+        // Funções para histórico local
+        function obterHistorico() {
+            const hist = localStorage.getItem('nexus_historico');
+            return hist ? JSON.parse(hist) : [];
+        }
+
+        function salvarNoHistorico(nome) {
+            if (!nome) return;
+            let hist = obterHistorico();
+            hist = hist.filter(item => item.toLowerCase() !== nome.toLowerCase());
+            hist.unshift(nome);
+            if (hist.length > 10) hist.pop();
+            localStorage.setItem('nexus_historico', JSON.stringify(hist));
+            carregarHistorico();
+        }
+
+        function removerDoHistorico(nome, event) {
+            if (event) event.stopPropagation();
+            let hist = obterHistorico();
+            hist = hist.filter(item => item.toLowerCase() !== nome.toLowerCase());
+            localStorage.setItem('nexus_historico', JSON.stringify(hist));
+            carregarHistorico();
+        }
+
+        function carregarHistorico() {
+            const hist = obterHistorico();
+            const container = document.getElementById('historyContainer');
+            const list = document.getElementById('historyList');
+
+            if (hist.length === 0) {
+                container.style.display = 'none';
+                list.innerHTML = '';
+                return;
+            }
+
+            container.style.display = 'flex';
+            list.innerHTML = '';
+
+            hist.forEach(nome => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'history-name';
+                nameSpan.textContent = nome;
+                nameSpan.title = `Consultar ${nome}`;
+                nameSpan.addEventListener('click', () => ativarAtalho(nome));
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'history-delete-btn';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.title = "Remover registro";
+                deleteBtn.addEventListener('click', (e) => removerDoHistorico(nome, e));
+
+                item.appendChild(nameSpan);
+                item.appendChild(deleteBtn);
+                list.appendChild(item);
+            });
         }
 
         function safeGet(value, placeholder = "INFORMAÇÃO CONFIDENCIAL / SEGREDO DE ESTADO") {
@@ -878,7 +1146,36 @@
             return value;
         }
 
-        async function consultarCaso() {
+        // Função de Limpeza da Requisição
+        function limparDossie() {
+            dossieAtivo = null;
+            inputPesquisa.value = "";
+            
+            const viewport = document.getElementById('viewport');
+            const btnPDF = document.getElementById('btnPDF');
+            const indexMenu = document.getElementById('dossierIndex');
+
+            btnPDF.style.display = 'none';
+            indexMenu.style.display = 'none';
+
+            viewport.innerHTML = `
+                <div class="viewport-watermark">NEXUS</div>
+                <div class="idle-terminal">
+                    <div class="idle-emblem">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </div>
+                    <div class="idle-text">
+                        Aguardando identificação penal do indivíduo.<br>
+                        Selecione um dos registros históricos arquivados ou digite um nome de interesse acima.
+                    </div>
+                </div>
+            `;
+        }
+
+        // Consulta Principal
+        async function consultarCaso(tentativasRestantes = 2) {
             const nome_pesquisa = inputPesquisa.value.trim();
             if (!nome_pesquisa) {
                 alert("Identifique um alvo para consulta.");
@@ -891,6 +1188,18 @@
             const btnPDF = document.getElementById('btnPDF');
             const indexMenu = document.getElementById('dossierIndex');
 
+            // 1. Verificação no banco local (estável e instantâneo)
+            const dossieLocal = buscarNoBancoLocal(nome_pesquisa);
+            if (dossieLocal) {
+                dossieAtivo = dossieLocal;
+                salvarNoHistorico(nome_pesquisa);
+                indexMenu.style.display = 'flex';
+                btnPDF.style.display = 'block';
+                switchSection('geral');
+                return;
+            }
+
+            // 2. Consulta à API externa para alvos não armazenados localmente
             btnConsultar.disabled = true;
             btnConsultar.innerText = "Interrogando...";
             btnPDF.style.display = 'none';
@@ -898,11 +1207,15 @@
             statusDot.classList.add('active');
             statusText.innerText = "VARREDURA ATIVA";
             
+            const textoLoader = tentativasRestantes < 2 
+                ? `Rede instável. Tentando restabelecer sinal (Tentativa ${3 - tentativasRestantes}/3)...`
+                : "Interrogando banco de dados federais...";
+
             viewport.innerHTML = `
                 <div class="viewport-watermark">NEXUS</div>
                 <div class="scanning-loader">
                     <div class="radar-spinner"></div>
-                    <div>Interrogando banco de dados federais...</div>
+                    <div>${textoLoader}</div>
                 </div>
             `;
 
@@ -913,12 +1226,17 @@
                     body: JSON.stringify({ nome_pesquisa })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`Servidor respondeu com código de status ${response.status}`);
+                }
+
                 const rData = await response.json();
 
                 if (rData.status === "success") {
                     const dados = rData.dados;
                     if (dados.pesquisa_valida) {
                         dossieAtivo = dados;
+                        salvarNoHistorico(nome_pesquisa);
                         indexMenu.style.display = 'flex';
                         btnPDF.style.display = 'block';
                         switchSection('geral');
@@ -932,22 +1250,36 @@
                         `;
                     }
                 } else {
-                    throw new Error(rData.message || "Não foi possível obter resposta da central.");
+                    throw new Error(rData.message || "A central retornou uma resposta inesperada.");
                 }
 
             } catch (error) {
                 console.error(error);
+                
+                if (tentativasRestantes > 0) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    return consultarCaso(tentativasRestantes - 1);
+                }
+
                 viewport.innerHTML = `
                     <div class="viewport-watermark">NEXUS</div>
                     <div class="error-card">
-                        <div class="error-title">Falha na Comunicação</div>
-                        <div class="error-desc">Não foi possível estabelecer contato com a base Nexus local. <br><br>Erro detectado: <strong>${error.message}</strong>.</div>
+                        <div class="error-title">Instabilidade temporária (API Gemini)</div>
+                        <div class="error-desc" style="margin-bottom: 20px;">
+                            O motor de processamento externo do Google Gemini está sob alta demanda neste momento. <br><br>
+                            Você pode tentar consultar novamente este alvo customizado ou, alternativamente, <strong>visualizar um de nossos 4 casos pré-carregados no menu à esquerda</strong>, que estão operando offline com estabilidade de 100%.
+                        </div>
+                        <button class="btn-clear" onclick="consultarCaso()" style="margin: 0 auto 12px auto; border-color: var(--accent-red); color: var(--accent-red); padding: 8px 18px;">
+                            Tentar Novamente
+                        </button>
                     </div>
                 `;
             } finally {
-                btnConsultar.disabled = false;
-                btnConsultar.innerText = "Executar Varredura";
-                statusText.innerText = "LINK OFICIAL";
+                if (tentativasRestantes === 0 || dossieAtivo || !statusDot.classList.contains('active')) {
+                    btnConsultar.disabled = false;
+                    btnConsultar.innerText = "Executar Varredura";
+                    statusText.innerText = "LINK OFICIAL";
+                }
             }
         }
 
@@ -1096,10 +1428,9 @@
             const maxLineWidth = pageWidth - (margin * 2);
             let currentY = 25;
 
-            // Cabeçalho de Inteligência Tática no PDF
             doc.setFont("courier", "bold");
             doc.setFontSize(13);
-            doc.setTextColor(109, 10, 29); // Cor Carmesim
+            doc.setTextColor(109, 10, 29);
             doc.text("ARQUIVO NEXUS // DEPARTAMENTO DE INTELIGENCIA NACIONAL", margin, currentY);
             currentY += 6;
             

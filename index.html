@@ -3,62 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mnemósine // Gerador de Suspense Psicológico</title>
+    <title>ARQUIVO NEXUS // Análise Criminológica Avançada</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Biblioteca para geração do PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* DEFINIÇÃO DOS TEMAS (VARIÁVEIS CSS) */
-        
-        /* Tema Escuro (Padrão) */
-        body {
-            --bg-deep: #0a0c10;
-            --bg-card: rgba(18, 22, 28, 0.75);
-            --accent-crimson: #a93232;
-            --accent-glow: rgba(169, 50, 50, 0.25);
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-focus: rgba(169, 50, 50, 0.5);
-            --input-bg: rgba(10, 12, 16, 0.6);
-            --viewport-bg: rgba(8, 10, 14, 0.4);
-            --gradient-1: rgba(20, 24, 33, 0.8);
-            --gradient-2: rgba(35, 15, 15, 0.25);
-            --title-color: #ffffff;
+        :root {
+            --bg-deep: #080a0f;
+            --bg-card: rgba(15, 22, 36, 0.96);
+            --accent-blue: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.15);
+            --text-main: #f1f5f9;
+            --text-muted: #64748b;
+            --border-subtle: rgba(2, 132, 199, 0.2);
+            --border-focus: rgba(2, 132, 199, 0.6);
+            --input-bg: #0b0f17;
+            --viewport-bg: rgba(11, 15, 23, 0.7);
+            --title-color: #f8fafc;
             --paragraph-color: #cbd5e1;
             --shadow-intensity: rgba(0, 0, 0, 0.6);
-            --toggle-bg: rgba(255, 255, 255, 0.05);
+            --tab-active: rgba(2, 132, 199, 0.1);
             
-            transition: background-color 0.5s ease, background-image 0.5s ease, color 0.3s ease;
+            --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* Tema Claro (Manuscrito de Pergaminho) */
         body.light-theme {
-            --bg-deep: #e8e6df;
-            --bg-card: rgba(255, 255, 255, 0.8);
-            --accent-crimson: #801818;
-            --accent-glow: rgba(128, 24, 24, 0.15);
-            --text-main: #1c1d21;
-            --text-muted: #5c6470;
-            --border-subtle: rgba(0, 0, 0, 0.1);
-            --border-focus: rgba(128, 24, 24, 0.4);
-            --input-bg: rgba(255, 255, 255, 0.9);
-            --viewport-bg: rgba(240, 238, 230, 0.6);
-            --gradient-1: rgba(225, 222, 212, 0.8);
-            --gradient-2: rgba(215, 200, 200, 0.3);
-            --title-color: #121315;
-            --paragraph-color: #2b2d31;
-            --shadow-intensity: rgba(0, 0, 0, 0.15);
-            --toggle-bg: rgba(0, 0, 0, 0.05);
-        }
-        
-        .app-container, .reading-panel, select, textarea, .btn-submit, .btn-secondary, .manuscript-viewport, .theme-toggle {
-            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, color 0.3s ease;
+            --bg-deep: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.98);
+            --accent-blue: #0369a1;
+            --accent-glow: rgba(3, 105, 161, 0.1);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-subtle: rgba(3, 105, 161, 0.2);
+            --border-focus: rgba(3, 105, 161, 0.5);
+            --input-bg: #f1f5f9;
+            --viewport-bg: rgba(241, 245, 249, 0.75);
+            --title-color: #0f172a;
+            --paragraph-color: #334155;
+            --shadow-intensity: rgba(148, 163, 184, 0.2);
+            --tab-active: rgba(3, 105, 161, 0.08);
         }
 
         * {
@@ -67,50 +54,38 @@
             padding: 0;
         }
 
-        /* Bloqueia rolagem geral da página em telas desktop */
-        @media (min-width: 961px) {
-            body {
-                overflow: hidden;
-                height: 100vh;
-            }
-        }
-
         body {
             background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 15% 25%, var(--gradient-1) 0%, transparent 55%),
-                radial-gradient(circle at 85% 75%, var(--gradient-2) 0%, transparent 65%);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
+            overflow-x: hidden;
+            transition: var(--transition-smooth);
         }
 
-        /* Container Principal Estruturado */
         .app-container {
             width: 100%;
-            max-width: 1240px;
+            max-width: 1400px;
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
+            border-radius: 8px;
             padding: 30px;
-            box-shadow: 0 24px 60px var(--shadow-intensity), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 60px var(--shadow-intensity);
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 360px 1fr;
             grid-template-rows: auto 1fr;
             gap: 30px;
-            position: relative;
+            transition: var(--transition-smooth);
         }
 
         @media (min-width: 961px) {
             .app-container {
-                height: 90vh;
-                max-height: 850px;
+                height: 92vh;
+                max-height: 940px;
             }
         }
 
@@ -123,7 +98,7 @@
             }
         }
 
-        /* Cabeçalho */
+        /* HEADER */
         header {
             grid-column: 1 / -1;
             border-bottom: 1px solid var(--border-subtle);
@@ -136,108 +111,85 @@
         }
 
         h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            letter-spacing: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
             color: var(--title-color);
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        h1 span {
+            color: var(--accent-blue);
         }
 
         .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: var(--text-muted);
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Controles de Cabeçalho (Toggle) */
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
         }
 
-        /* Botão Interruptor de Tema */
         .theme-toggle {
             background-color: var(--toggle-bg);
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            outline: none;
+            transition: var(--transition-smooth);
         }
 
         .theme-toggle:hover {
-            border-color: var(--border-focus);
-            background-color: rgba(0, 0, 0, 0.04);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        body.light-theme .theme-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.08);
-        }
-
-        .toggle-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
-
-        .theme-toggle:hover .toggle-icon {
-            transform: rotate(15deg);
-        }
-
-        .stream-indicator {
+        .status-panel {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
             color: var(--text-muted);
         }
 
-        /* Animação de pulso */
-        .pulse-icon {
+        .status-dot {
             width: 6px;
             height: 6px;
             background-color: var(--text-muted);
             border-radius: 50%;
-            transition: all 0.3s;
         }
 
-        .pulse-icon.active {
-            background-color: var(--accent-crimson);
-            box-shadow: 0 0 10px var(--accent-crimson);
-            animation: pulse-glow 2s infinite;
+        .status-dot.active {
+            background-color: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.3); opacity: 1; }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
-        /* Painel Lateral (Inputs) - Fixado no Dashboard */
-        .sidebar-controls {
+        /* SIDEBAR DE PESQUISA */
+        .sidebar {
             grid-column: 1;
             grid-row: 2;
             display: flex;
             flex-direction: column;
             gap: 20px;
-        }
-
-        @media (min-width: 961px) {
-            .sidebar-controls {
-                overflow-y: auto;
-                padding-right: 10px;
-            }
         }
 
         .input-group {
@@ -247,177 +199,125 @@
         }
 
         label {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.65rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Seletores e Textareas Modernos */
-        select, textarea {
+        input[type="text"] {
             background-color: var(--input-bg);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
+            border-radius: 4px;
             color: var(--text-main);
-            padding: 12px 14px;
+            padding: 14px;
             font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             outline: none;
             width: 100%;
+            transition: var(--transition-smooth);
         }
 
-        select:hover, textarea:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        body.light-theme select:hover, body.light-theme textarea:hover {
-            border-color: rgba(0, 0, 0, 0.25);
-        }
-
-        select:focus, textarea:focus {
+        input[type="text"]:focus {
             border-color: var(--border-focus);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        /* Campo customizável */
-        .custom-field {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
-            margin-top: 0;
-        }
-
-        .custom-field.visible {
-            max-height: 150px;
-            opacity: 1;
-            margin-top: 10px;
-        }
-
-        textarea.custom-input {
-            resize: none;
-            min-height: 90px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        /* Botões de Ação */
-        .action-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: auto;
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
         .btn-submit {
-            background-color: var(--accent-crimson);
+            background-color: var(--accent-blue);
             color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             padding: 16px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transition: all 0.3s ease;
+            transition: var(--transition-smooth);
         }
 
         .btn-submit:hover:not(:disabled) {
-            filter: brightness(1.15);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px var(--accent-glow);
-        }
-
-        .btn-submit:active:not(:disabled) {
-            transform: translateY(0);
+            filter: brightness(1.1);
+            box-shadow: 0 6px 15px var(--accent-glow);
         }
 
         .btn-submit:disabled {
-            background-color: #1a1e26;
-            color: rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
-            box-shadow: none;
-            border: 1px solid var(--border-subtle);
-        }
-
-        body.light-theme .btn-submit:disabled {
-            background-color: #e0e0e0;
-            color: #a0a0a0;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
+            background-color: var(--toggle-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            cursor: not-allowed;
+        }
+
+        /* NAVEGAÇÃO INTERNA DO DOSSIÊ (ÍNDICE) */
+        .dossier-index {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 15px;
+        }
+
+        .index-title {
+            font-size: 0.6rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
             text-transform: uppercase;
-            cursor: pointer;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
         }
 
-        .btn-secondary:hover:not(:disabled) {
-            border-color: var(--text-muted);
-            color: var(--text-main);
-            background-color: var(--toggle-bg);
-        }
-
-        /* Botão para Baixar PDF */
-        .btn-text-action {
+        .index-item {
             background: transparent;
-            border: 1px solid var(--accent-crimson);
-            color: var(--accent-crimson);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            padding: 6px 12px;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 10px 14px;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             border-radius: 4px;
-            transition: all 0.2s ease;
-            display: none; /* Exibido via JS */
+            cursor: pointer;
+            transition: var(--transition-smooth);
         }
 
-        .btn-text-action:hover {
-            background-color: var(--accent-crimson);
-            color: #ffffff;
+        .index-item.active {
+            color: var(--accent-blue);
+            border-color: var(--border-subtle);
+            background-color: var(--tab-active);
+            font-weight: 700;
         }
 
-        /* Painel de Leitura (O Manuscrito) - Fixado no Dashboard */
+        .index-item:hover:not(.active) {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* CONTAINER DE RELATÓRIO */
         .reading-panel {
             grid-column: 2;
             grid-row: 2;
             background-color: var(--viewport-bg);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        @media (min-width: 961px) {
-            .reading-panel {
-                height: 100%;
-            }
+            transition: var(--transition-smooth);
         }
 
         @media (max-width: 960px) {
             .reading-panel {
-                height: 550px;
+                height: 600px;
             }
         }
 
         .reading-panel-header {
             padding: 14px 24px;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-muted);
@@ -425,47 +325,129 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .reading-panel-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .btn-text-action {
+            background: transparent;
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+            display: none;
         }
 
-        /* Área de Escrita */
-        .manuscript-viewport {
-            padding: 40px;
+        .btn-text-action:hover {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: 0 4px 10px var(--accent-glow);
+        }
+
+        .viewport-content {
+            padding: 30px;
             overflow-y: auto;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 28px;
-            scroll-behavior: smooth;
+            gap: 24px;
         }
 
-        .manuscript-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            font-weight: 400;
+        .placeholder-text {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
             text-align: center;
-            color: var(--title-color);
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-            line-height: 1.3;
+            margin: auto;
+            max-width: 420px;
+            line-height: 1.8;
         }
 
-        /* Tipografia de Alta Qualidade para o Conto */
-        .manuscript-paragraph {
-            font-family: 'EB Garamond', serif;
-            font-size: 1.35rem;
-            line-height: 1.75;
+        /* RENDERIZADOR DAS SEÇÕES DO DOSSIÊ */
+        .dossier-layout {
+            animation: fadeIn 0.4s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-dossier {
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 15px;
+        }
+
+        .header-dossier-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--title-color);
+            font-weight: 700;
+        }
+
+        .header-dossier-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            margin-top: 4px;
+        }
+
+        /* METRIC CARDS */
+        .grid-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px dashed var(--border-subtle);
+            border-radius: 4px;
+            padding: 14px;
+        }
+
+        .metric-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--title-color);
+            line-height: 1.4;
+        }
+
+        /* TEXT BLOCK */
+        .block-text {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .block-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 8px;
+            font-weight: 700;
+        }
+
+        .block-body {
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: var(--paragraph-color);
             text-align: justify;
-            text-indent: 40px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            animation: fadeIn 0.8s ease forwards;
         }
 
         @keyframes fadeIn {
@@ -473,103 +455,43 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .placeholder-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-style: italic;
-            text-align: center;
-            margin: auto;
-            max-width: 320px;
-            line-height: 1.6;
-        }
-
-        /* DESIGN PREMIUM DO COMPONENTE DE ERRO (SINAL CORROMPIDO) */
+        /* ERROR CARD */
         .error-card {
-            background-color: rgba(10, 11, 14, 0.9);
-            border: 1px solid var(--accent-crimson);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.75), 0 0 20px var(--accent-glow);
-            padding: 32px;
-            border-radius: 12px;
-            max-width: 480px;
-            width: 100%;
+            border: 1px solid #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 24px;
+            border-radius: 4px;
+            max-width: 450px;
             margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
             text-align: center;
-            backdrop-filter: blur(12px);
-            animation: error-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        body.light-theme .error-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1), 0 0 20px var(--accent-glow);
-            border: 1.5px solid var(--accent-crimson);
-        }
-
-        .error-icon-wrapper {
-            color: var(--accent-crimson);
-            background: rgba(158, 42, 43, 0.08);
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(158, 42, 43, 0.2);
-            animation: pulse-blink 2s infinite;
         }
 
         .error-title {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-crimson);
-            font-size: 1.25rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
+            color: #ef4444;
+            font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
-        .error-message {
-            font-family: 'EB Garamond', serif;
-            font-size: 1.15rem;
-            color: var(--text-main);
+        .error-desc {
+            font-size: 0.85rem;
             line-height: 1.6;
-            font-weight: 400;
+            color: var(--text-main);
         }
 
-        @keyframes error-appear {
-            from {
-                opacity: 0;
-                transform: translateY(18px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes pulse-blink {
-            0%, 100% { opacity: 0.75; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.04); }
-        }
-
-        /* Barra de rolagem minimalista */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-        }
-        body.light-theme ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.08);
+            background: var(--border-subtle);
+            border-radius: 2px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--accent-blue);
         }
     </style>
 </head>
@@ -578,295 +500,270 @@
     <div class="app-container">
         <header>
             <div>
-                <h1>MNEMÓSINE</h1>
-                <span class="subtitle">Arquitetura de Atmosferas Narrativas</span>
+                <h1>ARQUIVO NEXUS <span>//</span></h1>
+                <span class="subtitle">Análise Forense e Dossiês Criminais de interesse público</span>
             </div>
             
             <div class="header-controls">
-                <button class="theme-toggle" id="themeToggle" title="Alternar Luminosidade">
-                    <span class="toggle-icon" id="toggleIcon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                    </span> 
-                    <span id="toggleText">Modo Claro</span>
-                </button>
-
-                <div class="stream-indicator">
-                    <span class="pulse-icon" id="pulseIcon"></span>
-                    <span id="statusText">Sistema Ocioso</span>
+                <button class="theme-toggle" id="themeToggle">Modo Claro</button>
+                <div class="status-panel">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Terminal Ocioso</span>
                 </div>
             </div>
         </header>
 
-        <aside class="sidebar-controls">
-            <!-- Espaço Geográfico Expandido -->
+        <aside class="sidebar">
             <div class="input-group">
-                <label for="cenario">Espaço Geográfico / Isolamento</label>
-                <select id="cenario" onchange="checkCustomOption('cenario')">
-                    <option value="Um farol automatizado na costa escocesa durante a pior tempestade do século">O Farol Costeiro</option>
-                    <option value="O subsolo esquecido de um arquivo público subterrâneo abandonado desde 1984">O Arquivo Subterrâneo</option>
-                    <option value="Uma cabana de caça nos confins da Sibéria onde o rádio só transmite estática">A Cabana Transiberiana</option>
-                    <option value="Uma estação científica subaquática de pesquisa no leito da Fossa das Marianas">Estação Abissal (Fossa das Marianas)</option>
-                    <option value="Um sanatório desativado no topo de uma montanha suíça, isolado por uma névoa perpétua">O Sanatório Suíço Desativado</option>
-                    <option value="Um vilarejo esquecido e decadente cercado por pântanos na costa da Nova Inglaterra">O Vilarejo Costeiro Pustulento</option>
-                    <option value="Uma estação de mineração deserta orbitando um planeta gigante gasoso sem luz solar">Estação Espacial Derivante</option>
-                    <option value="custom">Escrever um cenário personalizado...</option>
-                </select>
-                <div id="cenario_box" class="custom-field">
-                    <textarea id="cenario_custom" class="custom-input" placeholder="Descreva as características e o isolamento do ambiente..."></textarea>
-                </div>
+                <label for="nome_pesquisa">Nome da Figura Pública</label>
+                <input type="text" id="nome_pesquisa" placeholder="Ex: Ted Bundy, Fernandinho Beira-Mar..." autocomplete="off">
             </div>
 
-            <!-- Vetor de Ameaça Expandido -->
-            <div class="input-group">
-                <label for="tipo_medo">Vetor Psicológico (Ameaça)</label>
-                <select id="tipo_medo" onchange="checkCustomOption('tipo_medo')">
-                    <option value="Paranoia pura, onde o protagonista duvida se seus próprios sentidos e memórias são reais">Paranoia & Erosão Mental</option>
-                    <option value="Terror cósmico existencial, o confronto com uma verdade matemática impossível que destrói a mente">Horror Cósmico Existencial</option>
-                    <option value="Sobrenatural sutil, regras e superstições físicas antigas que começam a quebrar no ambiente">Gótico / Quebra da Física Local</option>
-                    <option value="Uma certeza absoluta de que há algo habitando os pontos cegos do ambiente e alterando os detalhes">Ameaça Invisível nos Pontos Cegos</option>
-                    <option value="O pavor inexplicável de encontrar discrepâncias físicas em si mesmo ou o duplo no reflexo do espelho">O Duplo (Efeito Doppelgänger)</option>
-                    <option value="Uma distorção na passagem do tempo, onde minutos parecem dias e o passado e futuro se sobrepõem">Anomalia Temporal / Perda de Tempo</option>
-                    <option value="A ausência absoluta de som ambiente que começa a causar alucinações e revelar vozes internas aos ossos">O Silêncio Absoluto Auditivo</option>
-                    <option value="custom">Definir fobia ou ameaça personalizada...</option>
-                </select>
-                <div id="tipo_medo_box" class="custom-field">
-                    <textarea id="tipo_medo_custom" class="custom-input" placeholder="Especifique a força, anomalia ou declínio que agirá na mente..."></textarea>
-                </div>
-            </div>
+            <button class="btn-submit" id="btnConsultar">Executar Varredura</button>
 
-            <!-- Filtros de Prosa Expandidos -->
-            <div class="input-group">
-                <label for="estilo_escrita">Filtro de Prosa (Estilo)</label>
-                <select id="estilo_escrita" onchange="checkCustomOption('estilo_escrita')">
-                    <option value="Estilo clássico do século XIX, poético, denso e melancólico como Edgar Allan Poe">Edgar Allan Poe (Clássico)</option>
-                    <option value="Relato documental frio, cru, em formato de registros de diário recuperados">Diário Absorvido (Found Footage)</option>
-                    <option value="Estilo moderno realista, frases curtas, focado no desespero claustrofóbico contemporâneo">Minimalismo Claustrofóbico</option>
-                    <option value="Estilo gótico romântico com tom acadêmico racionalista que declina diante do absurdo, como Mary Shelley">Gótico Científico (Mary Shelley)</option>
-                    <option value="Estilo focado em detalhes domésticos perturbadores, ironia psicológica e fluxo febril de consciência">Prosa Onírica e Ácida (Shirley Jackson)</option>
-                    <option value="Estilo noir pessimista com descrições cruas de decadência existencial, frases secas e melancólicas">Filtro Policial Noir Existencial</option>
-                    <option value="custom">Customizar tom literário...</option>
-                </select>
-                <div id="estilo_escrita_box" class="custom-field">
-                    <textarea id="estilo_escrita_custom" class="custom-input" placeholder="Ex: Escrito em tom poético, descritivo e denso..."></textarea>
-                </div>
-            </div>
-
-            <div class="action-container">
-                <button class="btn-submit" id="btnGerar">Projetar Prosa</button>
-                <button class="btn-secondary" id="btnLimpar">Limpar Formulário</button>
+            <!-- Menu de Navegação Rápida das Seções (Inserido Dinamicamente) -->
+            <div class="dossier-index" id="dossierIndex" style="display: none;">
+                <span class="index-title">Seções do Dossiê</span>
+                <button class="index-item active" onclick="switchSection('geral')">01 // Ficha Geral</button>
+                <button class="index-item" onclick="switchSection('origem')">02 // Histórico Familiar</button>
+                <button class="index-item" onclick="switchSection('atividades')">03 // Atividade Criminal</button>
+                <button class="index-item" onclick="switchSection('captura')">04 // Investigação & Júri</button>
+                <button class="index-item" onclick="switchSection('custodia')">05 // Custódia & Regime</button>
+                <button class="index-item" onclick="switchSection('impacto')">06 // Impacto & Mídia</button>
             </div>
         </aside>
 
         <main class="reading-panel">
             <div class="reading-panel-header">
-                <span>Manuscrito Gerado</span>
-                <div class="reading-panel-controls">
-                    <button class="btn-text-action" id="btnPDF">Baixar PDF</button>
-                    <span id="bytesDisplay">0 BYTES TRANSMITIDOS</span>
-                </div>
+                <span>Dossiê Consolidado</span>
+                <button class="btn-text-action" id="btnPDF">Exportar Relatório Geral (PDF)</button>
             </div>
-            <div class="manuscript-viewport" id="viewport">
-                <div class="placeholder-text" id="placeholder">
-                    Selecione as diretrizes estruturais ao lado e inicie o projeto para evocar o manuscrito.
+            
+            <div class="viewport-content" id="viewport">
+                <div class="placeholder-text">
+                    Aguardando entrada de pesquisa. Insira o nome de um indivíduo relevante para levantar e consolidar o histórico carcerário estruturado.
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        const API_URL = "https://gerador-de-conto-de-terror-ai.vercel.app/generate";
-        
-        // Memória para armazenar o objeto do conto gerado e possibilitar a exportação
-        let contoAtivo = null;
+        const API_URL = "http://127.0.0.1:5000/generate";
+        let dossieAtivo = null;
 
-        // Ícones SVG customizados e otimizados para cada modo
-        const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
-        const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
-
-        // CONFIGURAÇÃO DO ALTERNADOR DE TEMAS (CLARO / ESCURO)
+        // Toggle do Tema
         const themeToggle = document.getElementById('themeToggle');
-        const toggleIcon = document.getElementById('toggleIcon');
-        const toggleText = document.getElementById('toggleText');
-
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-theme');
-            
             const isLight = document.body.classList.contains('light-theme');
-            if (isLight) {
-                toggleIcon.innerHTML = moonSVG;
-                toggleText.innerText = "Modo Escuro";
-            } else {
-                toggleIcon.innerHTML = sunSVG;
-                toggleText.innerText = "Modo Claro";
-            }
+            themeToggle.innerText = isLight ? "Modo Escuro" : "Modo Claro";
         });
 
-        // Controla abertura suave dos campos personalizados usando classes CSS
-        function checkCustomOption(id) {
-            const select = document.getElementById(id);
-            const box = document.getElementById(`${id}_box`);
-            const customInput = document.getElementById(`${id}/_custom`);
-            
-            if (select.value === 'custom') {
-                box.classList.add('visible');
-                const textarea = box.querySelector('textarea');
-                if (textarea) textarea.focus();
-            } else {
-                box.classList.remove('visible');
-            }
-        }
+        // Eventos de Busca
+        const btnConsultar = document.getElementById('btnConsultar');
+        const inputPesquisa = document.getElementById('nome_pesquisa');
 
-        // FUNÇÃO PARA LIMPAR FORMULÁRIO
-        document.getElementById('btnLimpar').addEventListener('click', () => {
-            const selects = ['cenario', 'tipo_medo', 'estilo_escrita'];
-            
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                select.selectedIndex = 0;
-                
-                const customBox = document.getElementById(`${id}_box`);
-                if (customBox) {
-                    customBox.classList.remove('visible');
-                }
-                
-                const customInput = document.getElementById(`${id}_custom`);
-                if (customInput) {
-                    customInput.value = "";
-                }
-            });
-
-            // Oculta o botão de PDF e redefine o viewport
-            document.getElementById('btnPDF').style.display = 'none';
-            contoAtivo = null;
-
-            const viewport = document.getElementById('viewport');
-            viewport.innerHTML = `
-                <div class="placeholder-text" id="placeholder">
-                    Selecione as diretrizes estruturais ao lado e inicie o projeto para evocar o manuscrito.
-                </div>
-            `;
-            document.getElementById('bytesDisplay').innerText = "0 BYTES TRANSMITIDOS";
+        btnConsultar.addEventListener('click', consultarCaso);
+        inputPesquisa.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') consultarCaso();
         });
 
-        // GERAR CONTO
-        document.getElementById('btnGerar').addEventListener('click', async () => {
-            const getValor = (id) => {
-                const selectElement = document.getElementById(id);
-                if (selectElement.value === 'custom') {
-                    return document.getElementById(`${id}_custom`).value.trim();
-                }
-                return selectElement.value;
-            };
-
-            const cenario = getValor('cenario');
-            const tipo_medo = getValor('tipo_medo');
-            const estilo_escrita = getValor('estilo_escrita');
-            
-            if (!cenario || !tipo_medo || !estilo_escrita) {
-                alert("Por favor, preencha as descrições personalizadas antes de gerar.");
+        async function consultarCaso() {
+            const nome_pesquisa = inputPesquisa.value.trim();
+            if (!nome_pesquisa) {
+                alert("Insira um nome válido para pesquisa.");
                 return;
             }
 
             const viewport = document.getElementById('viewport');
-            const btn = document.getElementById('btnGerar');
-            const bytesDisplay = document.getElementById('bytesDisplay');
-            const pulseIcon = document.getElementById('pulseIcon');
+            const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
             const btnPDF = document.getElementById('btnPDF');
-            
-            // Estado de Carregamento Ativo
-            btn.disabled = true;
-            btn.innerText = "Projetando...";
+            const indexMenu = document.getElementById('dossierIndex');
+
+            btnConsultar.disabled = true;
+            btnConsultar.innerText = "Consultando...";
             btnPDF.style.display = 'none';
-            pulseIcon.classList.add('active');
-            statusText.innerText = "Transmitindo...";
-            viewport.innerHTML = `<div class="placeholder-text">Sincronizando canal literário...</div>`;
+            indexMenu.style.display = 'none';
+            statusDot.classList.add('active');
+            statusText.innerText = "Rastreando base criminológica...";
+            viewport.innerHTML = `<div class="placeholder-text">Extraindo dados biográficos, modus operandi, sentenças e registros penais...</div>`;
 
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cenario, tipo_medo, estilo_escrita })
+                    body: JSON.stringify({ nome_pesquisa })
                 });
 
-                const data = await response.json();
+                const rData = await response.json();
 
-                if (data.status === "success") {
-                    contoAtivo = data.dados_conto;
-                    exibirConto(data.dados_conto);
-                    btnPDF.style.display = 'block'; // Mostra o botão para baixar PDF
+                if (rData.status === "success") {
+                    const dados = rData.dados;
+                    if (dados.pesquisa_valida) {
+                        dossieAtivo = dados;
+                        indexMenu.style.display = 'flex';
+                        btnPDF.style.display = 'block';
+                        switchSection('geral');
+                    } else {
+                        viewport.innerHTML = `
+                            <div class="error-card">
+                                <div class="error-title">Consulta Negada</div>
+                                <div class="error-desc">${dados.justificativa_invalida || "O alvo não atende aos pré-requisitos de figura penal de interesse público."}</div>
+                            </div>
+                        `;
+                    }
                 } else {
-                    throw new Error(data.message || "Anomalia Narrativa inesperada.");
+                    throw new Error(rData.message || "Instabilidade no sistema do servidor.");
                 }
 
             } catch (error) {
                 console.error(error);
                 viewport.innerHTML = `
                     <div class="error-card">
-                        <div class="error-icon-wrapper">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-                                <line x1="12" y1="9" x2="12" y2="13"/>
-                                <line x1="12" y1="17" x2="12.01" y2="17"/>
-                            </svg>
-                        </div>
-                        <div class="error-title">Sinal Corrompido</div>
-                        <div class="error-message">${error.message}</div>
+                        <div class="error-title">Erro de Processamento</div>
+                        <div class="error-desc">Não foi possível estabelecer contato com o processador. Erro: <strong>${error.message}</strong>.</div>
                     </div>
                 `;
             } finally {
-                btn.disabled = false;
-                btn.innerText = "Projetar Prosa";
-                pulseIcon.classList.remove('active');
-                statusText.innerText = "Sistema Ocioso";
+                btnConsultar.disabled = false;
+                btnConsultar.innerText = "Executar Varredura";
+                statusDot.classList.remove('active');
+                statusText.innerText = "Terminal Ocioso";
             }
-        });
-
-        function exibirConto(conto) {
-            const viewport = document.getElementById('viewport');
-            viewport.innerHTML = ""; // Limpa o placeholder
-
-            // Título
-            const elTitulo = document.createElement('h2');
-            elTitulo.className = 'manuscript-title';
-            elTitulo.innerText = conto.titulo;
-            viewport.appendChild(elTitulo);
-
-            // Introdução
-            const elIntro = document.createElement('p');
-            elIntro.className = 'manuscript-paragraph';
-            elIntro.innerText = conto.introducao_cenario;
-            viewport.appendChild(elIntro);
-
-            // Desenvolvimento
-            const elDesenv = document.createElement('p');
-            elDesenv.className = 'manuscript-paragraph';
-            elDesenv.innerText = conto.desenvolvimento_suspense;
-            viewport.appendChild(elDesenv);
-
-            // Clímax
-            const elClimax = document.createElement('p');
-            elClimax.className = 'manuscript-paragraph';
-            elClimax.innerText = conto.climax_psicologico;
-            viewport.appendChild(elClimax);
-
-            // Desfecho
-            const elDesfecho = document.createElement('p');
-            elDesfecho.className = 'manuscript-paragraph';
-            elDesfecho.innerText = conto.desfecho_ambiguo;
-            viewport.appendChild(elDesfecho);
-
-            // Rola suavemente até o início do conto recém-gerado
-            viewport.scrollTop = 0;
-            
-            // Registra os bytes transmitidos aproximados baseados no tamanho do texto
-            const totalCaracteres = JSON.stringify(conto).length;
-            document.getElementById('bytesDisplay').innerText = `${totalCaracteres} BYTES TRANSMITIDOS`;
         }
 
-        // EXPORTAR PARA PDF COM FORMATAÇÃO EDITORIAL CLÁSSICA
+        // Navegação por Seções do Dossiê
+        function switchSection(secao) {
+            if (!dossieAtivo) return;
+
+            // Gerencia classes Ativas do menu lateral
+            const items = document.querySelectorAll('.index-item');
+            items.forEach(btn => btn.classList.remove('active'));
+
+            const viewport = document.getElementById('viewport');
+            viewport.innerHTML = "";
+
+            let contentHTML = "";
+
+            // Cabeçalho Padrão para manter a identidade do indivíduo selecionado
+            const cabecalhoHTML = `
+                <div class="header-dossier">
+                    <div class="header-dossier-title">${dossieAtivo.nome_completo}</div>
+                    <div class="header-dossier-meta">Alcunha(s): ${dossieAtivo.alcunhas_pseudonimos || 'Nenhuma registrada oficialmente'}</div>
+                </div>
+            `;
+
+            switch (secao) {
+                case 'geral':
+                    items[0].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="grid-metrics">
+                            <div class="metric-card">
+                                <div class="metric-label">Identidade Registrada</div>
+                                <div class="metric-value">${dossieAtivo.nome_completo}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Dados Biográficos Gerais</div>
+                                <div class="metric-value">${dossieAtivo.dados_biograficos_basicos}</div>
+                            </div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Resumo do Caso</div>
+                            <div class="block-body">${dossieAtivo.resumo_caso}</div>
+                        </div>
+                    `;
+                    break;
+                case 'origem':
+                    items[1].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="block-text">
+                            <div class="block-header">Histórico Familiar & Infância</div>
+                            <div class="block-body">${dossieAtivo.infancia_desenvolvimento}</div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Primeiros Desvios & Delitos</div>
+                            <div class="block-body">${dossieAtivo.antecedentes_primeiros_delitos}</div>
+                        </div>
+                    `;
+                    break;
+                case 'atividades':
+                    items[2].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="block-text">
+                            <div class="block-header">Cronologia Criminal de Atos Principais</div>
+                            <div class="block-body">${dossieAtivo.cronologia_crimes_principais}</div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Modus Operandi de Atuação</div>
+                            <div class="block-body">${dossieAtivo.modus_operandi_tecnico}</div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Perfil Psiquiátrico / Comportamental Mapeado</div>
+                            <div class="block-body">${dossieAtivo.perfil_psicologico_diagnostico}</div>
+                        </div>
+                    `;
+                    break;
+                case 'captura':
+                    items[3].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="block-text">
+                            <div class="block-header">Investigação Policial & Captura</div>
+                            <div class="block-body">${dossieAtivo.investigacao_captura}</div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Julgamento e Sentença Fixada</div>
+                            <div class="block-body">${dossieAtivo.processo_julgamento_sentenca}</div>
+                        </div>
+                    `;
+                    break;
+                case 'custodia':
+                    items[4].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="grid-metrics">
+                            <div class="metric-card">
+                                <div class="metric-label">Regime Penal de Custódia</div>
+                                <div class="metric-value">${dossieAtivo.regime_atual}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Dosimetria Total da Pena</div>
+                                <div class="metric-value">${dossieAtivo.anos_condenacao}</div>
+                            </div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Conduta Prisional</div>
+                            <div class="block-body">${dossieAtivo.vida_carceraria_comportamento}</div>
+                        </div>
+                        <div class="block-text">
+                            <div class="block-header">Situação do Indivíduo no Presente</div>
+                            <div class="block-body">${dossieAtivo.situacao_atual_hoje}</div>
+                        </div>
+                    `;
+                    break;
+                case 'impacto':
+                    items[5].classList.add('active');
+                    contentHTML = `
+                        ${cabecalhoHTML}
+                        <div class="block-text">
+                            <div class="block-header">Impacto Sociocultural, Jurídico & Legado</div>
+                            <div class="block-body">${dossieAtivo.impacto_social_legado}</div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            viewport.innerHTML = `<div class="dossier-layout">${contentHTML}</div>`;
+            viewport.scrollTop = 0;
+        }
+
+        // Geração Unificada do Relatório PDF Completo
         document.getElementById('btnPDF').addEventListener('click', () => {
-            if (!contoAtivo) return;
+            if (!dossieAtivo) return;
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({
@@ -875,76 +772,75 @@
                 format: 'a4'
             });
 
-            const margin = 24;
+            const margin = 20;
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
             const maxLineWidth = pageWidth - (margin * 2);
+            let currentY = 25;
 
-            // Configuração do Título
-            doc.setFont("times", "bold");
-            doc.setFontSize(22);
+            // Cabeçalho estrutural de arquivo
+            doc.setFont("courier", "bold");
+            doc.setFontSize(14);
+            doc.text("ARQUIVO NEXUS // SISTEMA FORENSE", margin, currentY);
+            currentY += 6;
+            doc.setFontSize(9);
+            doc.text(`REGISTRO COMPLETO DE EXPEDIÇÃO PENAL: ${dossieAtivo.nome_completo.toUpperCase()}`, margin, currentY);
+            currentY += 4;
+            doc.line(margin, currentY, pageWidth - margin, currentY);
+            currentY += 10;
 
-            const titulo = contoAtivo.titulo.toUpperCase();
-            const tituloLinhas = doc.splitTextToSize(titulo, maxLineWidth);
-            let currentY = 35;
-
-            tituloLinhas.forEach(line => {
-                const textWidth = doc.getTextWidth(line);
-                const x = (pageWidth - textWidth) / 2;
-                doc.text(line, x, currentY);
-                currentY += 8;
-            });
-
-            currentY += 12; // Espaçamento abaixo do título
-
-            // Configuração do Corpo de Texto
-            doc.setFont("times", "normal");
-            doc.setFontSize(12);
-
-            const paragrafos = [
-                contoAtivo.introducao_cenario,
-                contoAtivo.desenvolvimento_suspense,
-                contoAtivo.climax_psicologico,
-                contoAtivo.desfecho_ambiguo
+            const structuredData = [
+                { label: "NOME COMPLETO", val: dossieAtivo.nome_completo },
+                { label: "ALCUNHAS E COGNOMES", val: dossieAtivo.alcunhas_pseudonimos },
+                { label: "DADOS BIOGRAFICOS", val: dossieAtivo.dados_biograficos_basicos },
+                { label: "RESUMO GERAL", val: dossieAtivo.resumo_caso },
+                { label: "INFANCIA E AMBIENTE FAMILIAR", val: dossieAtivo.infancia_desenvolvimento },
+                { label: "ANTECEDENTES E PRIMEIRAS ANOMALIAS", val: dossieAtivo.antecedentes_primeiros_delitos },
+                { label: "CRONOLOGIA CRIMINAL DETALHADA", val: dossieAtivo.cronologia_crimes_principais },
+                { label: "METODOLOGIA E MODUS OPERANDI", val: dossieAtivo.modus_operandi_tecnico },
+                { label: "PERFIL PSICOLOGICO E PSIQUIATRICO", val: dossieAtivo.perfil_psicologico_diagnostico },
+                { label: "INVESTIGACAO E OPERACAO DE CAPTURA", val: dossieAtivo.investigacao_captura },
+                { label: "JULGAMENTO, DEFESA E SENTENCA", val: dossieAtivo.processo_julgamento_sentenca },
+                { label: "COMPORTAMENTO CARCERARIO", val: dossieAtivo.vida_carceraria_comportamento },
+                { label: "REGIME ATUAL DE CUMPRIMENTO", val: dossieAtivo.regime_atual },
+                { label: "TOTAL DA PENA", val: dossieAtivo.anos_condenacao },
+                { label: "SITUACAO ATUAL HOJE", val: dossieAtivo.situacao_atual_hoje },
+                { label: "REPERCUSSAO SOCIAL E MUDANCAS LEGAIS", val: dossieAtivo.impacto_social_legado }
             ];
 
-            const paragraphIndent = 12; // Recuo clássico de parágrafo
+            doc.setFont("courier", "normal");
+            doc.setFontSize(9.5);
 
-            paragrafos.forEach(paragrafo => {
-                if (!paragrafo) return;
+            structuredData.forEach(section => {
+                if (!section.val) return;
 
-                const linhas = doc.splitTextToSize(paragrafo, maxLineWidth);
+                // Margens e controle de altura
+                if (currentY > pageHeight - 25) {
+                    doc.addPage();
+                    currentY = 20;
+                }
 
-                linhas.forEach((linha, index) => {
-                    // Verifica se é necessário quebrar a página com margem segura
-                    if (currentY > pageHeight - 25) {
+                doc.setFont("courier", "bold");
+                doc.text(`[${section.label}]`, margin, currentY);
+                currentY += 5;
+
+                doc.setFont("courier", "normal");
+                const splitText = doc.splitTextToSize(section.val, maxLineWidth);
+                
+                splitText.forEach(line => {
+                    if (currentY > pageHeight - 20) {
                         doc.addPage();
-                        currentY = 25;
-                        doc.setFont("times", "normal");
-                        doc.setFontSize(12);
+                        currentY = 20;
                     }
-
-                    let xPosition = margin;
-                    // Aplica recuo de primeira linha apenas no início do parágrafo
-                    if (index === 0) {
-                        xPosition += paragraphIndent;
-                    }
-
-                    doc.text(linha, xPosition, currentY);
-                    currentY += 7.5; // Espaçamento entre linhas (leading)
+                    doc.text(line, margin, currentY);
+                    currentY += 5.5;
                 });
 
-                currentY += 6; // Espaçamento extra entre parágrafos
+                currentY += 6; // Espaço para a próxima seção
             });
 
-            // Formatação do nome de arquivo
-            const nomeArquivo = contoAtivo.titulo.toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "") // Remove acentuações
-                .replace(/[^a-z0-9]/g, '_')
-                .replace(/_+/g, '_') + '.pdf';
-
-            doc.save(nomeArquivo);
+            const fileName = `dossie_completo_${dossieAtivo.nome_completo.toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`;
+            doc.save(fileName);
         });
     </script>
 </body>
